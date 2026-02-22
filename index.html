@@ -4,6 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Manish Rudra Vijayakumar</title>
+<link rel="icon" 
+  type="image/png" 
+  className="rounded-full" 
+  href="data/assets/logo_black.png"
+/>
 
 <!-- Tailwind CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -183,9 +188,12 @@ function Nav() {
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
         px-8 md:px-14 py-5 border-b border-white/10">
       <a href="#hero"
-        className="font-display text-[22px] tracking-widest text-white
+        className="flex items-center gap-3 font-display text-[22px] tracking-widest text-white
           hover:text-[#d8d4cc] transition-colors duration-300">
-        {nav.name}<span className="text-[#666]">.</span>{nav.surname}
+        {nav.image && (
+          <img src={nav.image} alt={nav.name}
+            className="w-8 h-8 object-contain shrink-0 bg-[#080808] rounded-full"/>
+        )}
       </a>
       <div className="hidden md:flex items-center gap-10">
         {nav.links.map(l=>(
