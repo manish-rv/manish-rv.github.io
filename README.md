@@ -1,70 +1,101 @@
-# Getting Started with Create React App
+# Manish Rudra Vijayakumar — Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modular, React-based portfolio website with a stark monochrome editorial aesthetic.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Project Structure
 
-### `npm start`
+```
+portfolio/
+├── index.html                  ← Self-contained preview (React via CDN, no build needed)
+│
+└── src/
+    ├── data/
+    │   └── content.js          ← ✏️  ALL hardcoded text lives here. Edit this to update the site.
+    │
+    ├── styles/
+    │   └── globals.css         ← All global CSS, animations, and utility classes
+    │
+    └── components/
+        ├── App.jsx             ← Root component — composes all sections
+        ├── Cursor.jsx          ← Custom crosshair cursor
+        ├── Particles.jsx       ← Canvas particle effect
+        ├── useReveal.js        ← Scroll-reveal hooks (useReveal, useTimelineFill)
+        ├── Nav.jsx             ← Navigation bar
+        ├── Hero.jsx            ← Hero / landing section
+        ├── Marquee.jsx         ← Scrolling skill ticker
+        ├── About.jsx           ← About me + info grid
+        ├── Experience.jsx      ← Timeline (work + education)
+        ├── Projects.jsx        ← Project cards with video/demo area
+        └── Contact.jsx         ← Contact section + footer
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Editing Content
 
-### `npm test`
+**To update any text**, open `src/data/content.js` and edit the relevant export:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Export        | Controls                                      |
+|---------------|-----------------------------------------------|
+| `nav`         | Logo name, nav links, hire-me CTA             |
+| `hero`        | Name, role, bio, stats, CTA buttons           |
+| `marqueeSkills` | Skills in the scrolling ticker              |
+| `about`       | About text, skills list, info grid            |
+| `experience`  | Timeline entries (role, company, dates, tags) |
+| `projects`    | Project cards (title, stack, description, GitHub link, video) |
+| `contact`     | Contact heading, body text, links, footer     |
 
-### `npm run build`
+### Adding a project video
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+In `content.js`, find the project entry and set `videoSrc`:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```js
+{
+  index: "01",
+  title: "SF Analytics Dashboard",
+  videoSrc: "/videos/sf-dashboard.mp4",  // ← set this
+  ...
+}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Running Locally
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Option A — Zero build (open directly in browser)
+```
+open index.html
+```
+Uses React + Babel via CDN. No npm required.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Option B — With a build tool (Vite recommended)
+```bash
+npm create vite@latest portfolio-app -- --template react
+cd portfolio-app
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# Copy src/ files in
+cp -r src/ portfolio-app/src/
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+npm install
+npm run dev
+```
 
-## Learn More
+Then in `main.jsx`:
+```jsx
+import './src/styles/globals.css'
+import App from './src/components/App'
+ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Tech Stack
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **React 18** — component architecture
+- **Tailwind CSS** — utility classes
+- **Bebas Neue + Barlow Condensed + IBM Plex Mono** — typography
+- **IntersectionObserver** — scroll-triggered reveal animations
+- **Canvas API** — particle effect
+- **CSS keyframes** — all animations (no animation library dependency)

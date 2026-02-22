@@ -1,0 +1,47 @@
+const EXPERIENCE = {
+  sectionNumber: "02", sectionLabel: "Experience",
+  heading: ["WHERE I'VE", "BEEN."],
+  summary: "5 years across Salesforce ecosystems, enterprise integration, and academic research.",
+  items: [
+    {
+      role: "Senior Salesforce Developer",
+      company: "Accenture",
+      period: "2022 – PRESENT",
+      description: "Led end-to-end implementation of Sales Cloud and Service Cloud for Fortune 500 clients. Architected Apex solutions, automated workflows using Flow, and integrated Salesforce with ERP systems via REST/SOAP — reducing manual processing by 40%.",
+      tags: ["Apex", "LWC", "Sales Cloud", "Service Cloud", "MuleSoft"],
+      tagStyle: "primary",
+    },
+    {
+      role: "Salesforce Developer",
+      company: "Deloitte Digital",
+      period: "2020 – 2022",
+      description: "Built custom Salesforce apps for healthcare. Developed Patient Journey automation, designed Einstein Analytics dashboards, and maintained HIPAA-compliant third-party integrations.",
+      tags: ["Apex", "Health Cloud", "Einstein Analytics", "Visualforce"],
+      tagStyle: "primary",
+    },
+    {
+      role: "Junior Salesforce Developer",
+      company: "TechMahindra",
+      period: "2019 – 2020",
+      description: "Began career building CPQ solutions and custom reports. Worked Agile sprints, wrote Apex triggers and test classes, mentored 3 junior developers.",
+      tags: ["CPQ", "Apex Triggers", "SOQL", "Agile"],
+      tagStyle: "primary",
+    },
+    {
+      role: "M.S. Computer Science",
+      company: "State University of New York",
+      period: "2017 – 2019",
+      description: "Focused on Distributed Systems and Machine Learning. Thesis on graph-based recommendation engines. Published at ICSE student symposium.",
+      tags: ["Machine Learning", "Distributed Systems", "Research"],
+      tagStyle: "secondary",
+    },
+    {
+      role: "B.E. Computer Engineering",
+      company: "Mumbai University",
+      period: "2013 – 2017",
+      description: "Built foundations in algorithms, data structures, OS, and networking. Led the coding club and organized 2 hackathons with 200+ participants each.",
+      tags: ["Algorithms", "Systems Design", "Hackathons"],
+      tagStyle: "secondary",
+    },
+  ],
+};
