@@ -10,7 +10,7 @@ export default function Hero() {
       <div className="absolute left-14 top-28 bottom-0 hidden md:flex flex-col items-center gap-4">
         <div className="w-px bg-[#333]/50 h-20" />
         <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-[#666] rotate-90 origin-center whitespace-nowrap mt-8">
-          Manish Rudra Vijayakumar 2026
+          Manish Portfolio 2026
         </span>
       </div>
 
