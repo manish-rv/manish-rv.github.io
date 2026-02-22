@@ -1,0 +1,43 @@
+const PROJECTS = {
+  sectionNumber: "03", sectionLabel: "Selected Work",
+  heading: ["THINGS I'VE", "SHIPPED."],
+  githubAllHref: "https://github.com",
+  items: [
+    {
+      index: "01",
+      title: "SF Analytics Dashboard",
+      stack: "LWC · D3.js · Apex",
+      description: "Real-time Salesforce data visualizer. Live org metrics, pipeline health, and SLA compliance in one interface.",
+      tags: ["LWC", "D3.js", "Apex"],
+      githubHref: "https://github.com",
+      videoSrc: null,
+    },
+    {
+      index: "02",
+      title: "RecSys — Graph Recommender",
+      stack: "Python · PyTorch · Neo4j",
+      description: "Masters thesis. GNN-based recommendation engine with 23% higher CTR than collaborative filtering baselines.",
+      tags: ["Python", "PyTorch", "Neo4j"],
+      githubHref: "https://github.com",
+      videoSrc: null,
+    },
+    {
+      index: "03",
+      title: "DevPulse — CI/CD Monitor",
+      stack: "React · Node.js · WS",
+      description: "Unified real-time dashboard aggregating GitHub Actions, Jenkins, and CircleCI health metrics.",
+      tags: ["React", "Node.js", "WS"],
+      githubHref: "https://github.com",
+      videoSrc: null,
+    },
+    {
+      index: "04",
+      title: "Campus Connect",
+      stack: "Django · PostgreSQL",
+      description: "UG capstone. Social network for university students — events, study groups, resource sharing.",
+      tags: ["Django", "PostgreSQL"],
+      githubHref: "https://github.com",
+      videoSrc: null,
+    },
+  ],
+};

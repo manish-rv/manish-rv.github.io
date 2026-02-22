@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manish Rudra Vijayakumar</title>
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- React + ReactDOM + Babel (CDN — no build step needed for preview) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+<!-- Global styles (fonts, reset, animations, utilities) -->
+<link rel="stylesheet" href="globals.css" />
+
+<!-- Tailwind config -->
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['"Bebas Neue"', 'sans-serif'],
+        cond:    ['"Barlow Condensed"', 'sans-serif'],
+        body:    ['Barlow', 'sans-serif'],
+        mono:    ['"IBM Plex Mono"', 'monospace'],
+      },
+    }
+  }
+}
+</script>
+
+</head>
+
+<body>
+<div id="root"></div>
+
+<!-- ─────────────────────────────────────────────
+     DATA  — one file per section under data/
+     Edit the individual files to update portfolio text:
+       data/nav.js        → NAV
+       data/hero.js       → HERO
+       data/marquee.js    → MARQUEE
+       data/about.js      → ABOUT
+       data/experience.js → EXPERIENCE
+       data/projects.js   → PROJECTS
+       data/contact.js    → CONTACT
+───────────────────────────────────────────── -->
+<script src="data/nav.js"></script>
+<script src="data/hero.js"></script>
+<script src="data/marquee.js"></script>
+<script src="data/about.js"></script>
+<script src="data/experience.js"></script>
+<script src="data/projects.js"></script>
+<script src="data/contact.js"></script>
+<script>
+const CONTENT = {
+  nav:        NAV,
+  hero:       HERO,
+  marquee:    MARQUEE,
+  about:      ABOUT,
+  experience: EXPERIENCE,
+  projects:   PROJECTS,
+  contact:    CONTACT,
+};
+</script>
+
+<!-- ─────────────────────────────────────────────
+     REACT COMPONENTS  (mirrors src/components/)
+───────────────────────────────────────────── -->
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+/* ══════════ Cursor ══════════ */
+function Cursor() {
+  const crossRef = useRef(null), dotRef = useRef(null), ringRef = useRef(null);
+  useEffect(() => {
+    let mx=0,my=0,rx=0,ry=0;
+    const onMove = e => { mx=e.clientX; my=e.clientY; };
+    document.addEventListener("mousemove", onMove);
+    let raf;
+    const tick = () => {
+      if(crossRef.current){ crossRef.current.style.left=mx+"px"; crossRef.current.style.top=my+"px"; }
+      if(dotRef.current)  { dotRef.current.style.left=mx+"px";   dotRef.current.style.top=my+"px"; }
+      rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13;
+      if(ringRef.current) { ringRef.current.style.left=rx+"px";  ringRef.current.style.top=ry+"px"; }
+      raf=requestAnimationFrame(tick);
+    };
+    raf=requestAnimationFrame(tick);
+    return () => { document.removeEventListener("mousemove",onMove); cancelAnimationFrame(raf); };
+  },[]);
+  return (<>
+    <div ref={crossRef} className="cursor-cross"><div className="cursor-cross-inner"/></div>
+    <div ref={dotRef}  className="cursor-dot"/>
+    <div ref={ringRef} className="cursor-ring"/>
+  </>);
+}
+
+/* ══════════ Particles ══════════ */
+function Particles({ count=40 }) {
+  const cvRef = useRef(null);
+  useEffect(() => {
+    const cv=cvRef.current, ctx=cv.getContext("2d");
+    let W,H,pts=[],raf;
+    const resize=()=>{ W=cv.width=innerWidth; H=cv.height=innerHeight; };
+    const mk=()=>({ x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.2+.3,
+      dx:(Math.random()-.5)*.18, dy:(Math.random()-.5)*.18, a:Math.random()*.25+.05 });
+    resize(); addEventListener("resize",resize);
+    for(let i=0;i<count;i++) pts.push(mk());
+    const draw=()=>{
+      ctx.clearRect(0,0,W,H);
+      pts.forEach(p=>{
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle="#fff"; ctx.globalAlpha=p.a; ctx.fill();
+        p.x+=p.dx; p.y+=p.dy;
+        if(p.x<0||p.x>W||p.y<0||p.y>H){ Object.assign(p,mk()); p.x=Math.random()*W; p.y=Math.random()*H; }
+      });
+      ctx.globalAlpha=1; raf=requestAnimationFrame(draw);
+    };
+    raf=requestAnimationFrame(draw);
+    return ()=>{ removeEventListener("resize",resize); cancelAnimationFrame(raf); };
+  },[count]);
+  return <canvas ref={cvRef} className="particles-canvas"/>;
+}
+
+/* ══════════ Reveal hooks ══════════ */
+function useReveal(threshold=0.08) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("on"); }),
+      { threshold }
+    );
+    const el=ref.current;
+    if(!el) return;
+    el.querySelectorAll(".rev,.rev-l,.rev-r").forEach(n=>obs.observe(n));
+    return ()=>obs.disconnect();
+  },[threshold]);
+  return ref;
+}
+
+function useTimelineFill(threshold=0.04) {
+  const secRef=useRef(null), fillRef=useRef(null);
+  useEffect(()=>{
+    const obs=new IntersectionObserver(
+      es=>es.forEach(e=>{ if(e.isIntersecting&&fillRef.current) fillRef.current.classList.add("on"); }),
+      { threshold }
+    );
+    if(secRef.current) obs.observe(secRef.current);
+    return ()=>obs.disconnect();
+  },[threshold]);
+  return [secRef,fillRef];
+}
+
+/* ══════════ SectionLabel ══════════ */
+function SectionLabel({ number, label }) {
+  return (
+    <div className="flex items-center gap-3 mb-8">
+      <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-[#666]">{number} —</span>
+      <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-[#666]">{label}</span>
+      <div className="flex-1 h-px bg-[#333]/50 ml-2"/>
+    </div>
+  );
+}
+
+/* ══════════ Nav ══════════ */
+function Nav() {
+  const navRef=useRef(null);
+  const { nav } = CONTENT;
+  useEffect(()=>{
+    const onScroll=()=>{
+      if(!navRef.current) return;
+      navRef.current.style.borderBottomColor=scrollY>40?"rgba(255,255,255,0.08)":"rgba(255,255,255,0.06)";
+    };
+    addEventListener("scroll",onScroll);
+    return ()=>removeEventListener("scroll",onScroll);
+  },[]);
+  return (
+    <nav ref={navRef} id="nav"
+      style={{ background:"rgba(8,8,8,0.92)", backdropFilter:"blur(12px)", WebkitBackdropFilter:"blur(12px)" }}
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
+        px-8 md:px-14 py-5 border-b border-white/10">
+      <a href="#hero"
+        className="font-display text-[22px] tracking-widest text-white
+          hover:text-[#d8d4cc] transition-colors duration-300">
+        {nav.name}<span className="text-[#666]">.</span>{nav.surname}
+      </a>
+      <div className="hidden md:flex items-center gap-10">
+        {nav.links.map(l=>(
+          <a key={l.href} href={l.href}
+            className="font-mono text-[10px] tracking-[0.16em] uppercase text-[#888]
+              hover:text-white transition-colors duration-200">{l.label}</a>
+        ))}
+      </div>
+      <a href={nav.cta.href}
+        className="hidden md:inline-flex items-center gap-2 font-mono text-[10px]
+          tracking-[0.14em] uppercase border border-[#333] text-[#888]
+          hover:border-white hover:text-white px-5 py-2.5 transition-all duration-300">
+        {nav.cta.label}
+      </a>
+    </nav>
+  );
+}
+
+/* ══════════ Hero ══════════ */
+function Hero() {
+  const { hero } = CONTENT;
+  return (
+    <section id="hero"
+      className="relative min-h-screen flex flex-col justify-end
+        pb-16 px-8 md:px-14 pt-28 overflow-hidden z-10">
+      <div className="absolute left-14 top-28 bottom-0 hidden md:flex flex-col items-center gap-4">
+        <div className="w-px bg-[#333]/50 h-20"/>
+        <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-[#666]
+          rotate-90 origin-center whitespace-nowrap mt-8">Portfolio 2024</span>
+      </div>
+      <div className="relative">
+        <div className="absolute inset-0 flex items-end pointer-events-none select-none overflow-hidden">
+          <span className="font-display leading-none tracking-tight text-white/[0.03] whitespace-nowrap"
+            style={{fontSize:"clamp(80px,18vw,220px)",letterSpacing:"-0.03em"}}>
+            MANISH RUDRA VIJAYAKUMAR
+          </span>
+        </div>
+        <div className="relative">
+          <div className="anim-fade-up flex flex-wrap items-center gap-4 mb-6">
+            <div className="w-8 h-px bg-[#666]"/>
+            {hero.tags.map((tag,i)=>(
+              <span key={tag} className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#888]">
+                {tag}{i<hero.tags.length-1&&<span className="nav-dot inline-block ml-4"/>}
+              </span>
+            ))}
+          </div>
+          <h1 className="anim-fade-up-1 font-display leading-[0.88] tracking-tight text-white"
+            style={{fontSize:"clamp(72px,13vw,172px)",letterSpacing:"-0.02em"}}>
+            {hero.firstName}<br/>
+            <span className="text-[#f0ede6]/90">{hero.lastName}</span>
+            <span className="text-[#333] anim-blink">_</span>
+          </h1>
+          <p className="anim-fade-up-2 font-mono text-[clamp(12px,1.8vw,15px)]
+            tracking-[0.2em] uppercase text-[#666] mt-4 mb-6">
+            <span className="text-[#888]">// </span>{hero.role}
+          </p>
+          <div className="anim-fade-up-3 max-w-xl">
+            <p className="font-body font-light text-[15px] leading-[1.85] text-[#888]"
+              dangerouslySetInnerHTML={{__html:hero.bio}}/>
+          </div>
+          <div className="anim-fade-up-4 mt-10 flex flex-wrap items-end gap-12 border-t border-[#333]/40 pt-8">
+            {hero.stats.map(s=>(
+              <div key={s.label}>
+                <div className="font-display text-[52px] text-white leading-none mb-1">{s.value}</div>
+                <div className="font-mono text-[9px] tracking-[0.14em] uppercase text-[#666]">{s.label}</div>
+              </div>
+            ))}
+            <div className="ml-auto flex gap-4 items-end pb-2 flex-wrap">
+              {hero.cta.map(btn=>btn.primary?(
+                <a key={btn.label} href={btn.href}
+                  className="group inline-flex items-center gap-3 bg-white text-[#080808]
+                    font-cond font-semibold text-[12px] tracking-[0.12em] uppercase
+                    px-7 py-3.5 hover:bg-[#e8e4dc] transition-colors duration-200">{btn.label}</a>
+              ):(
+                <a key={btn.label} href={btn.href}
+                  className="inline-flex items-center gap-3 border border-[#333] text-[#888]
+                    font-cond font-medium text-[12px] tracking-[0.12em] uppercase
+                    px-7 py-3.5 hover:border-[#f0ede6] hover:text-[#f0ede6]
+                    transition-all duration-200">{btn.label}</a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="anim-fade-late absolute bottom-8 right-12 flex items-center gap-3
+        font-mono text-[9px] tracking-[0.18em] uppercase text-[#666]">
+        Scroll
+        <div className="flex flex-col gap-0.5 anim-bounce">
+          <span className="block w-3.5 h-px bg-[#666] rotate-45 origin-right"/>
+          <span className="block w-3.5 h-px bg-[#666] -rotate-45 -translate-y-px origin-right"/>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════ Marquee ══════════ */
+function Marquee() {
+  const items = [...CONTENT.marquee,...CONTENT.marquee];
+  return (
+    <div className="relative z-10 border-t border-b border-[#333]/40 bg-[#0f0f0f] py-3 overflow-hidden">
+      <div className="marquee-track">
+        <div className="marquee-inner font-display text-[15px] tracking-[0.18em] text-[#444]">
+          {items.map((s,i)=><span key={i}>&nbsp;&nbsp;{s.toUpperCase()}&nbsp;<span className="text-[#333]">—</span></span>)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════ About ══════════ */
+function About() {
+  const ref = useReveal();
+  const { about } = CONTENT;
+  return (
+    <section id="about" className="relative z-10 bg-[#080808] border-b border-[#333]/30" ref={ref}>
+      <div className="max-w-5xl mx-auto px-8 md:px-14 py-24 grid md:grid-cols-2 gap-16 items-center">
+        <div className="rev">
+          <SectionLabel number={about.sectionNumber} label={about.sectionLabel}/>
+          <h2 className="font-display leading-[0.9] tracking-tight text-white mb-8"
+            style={{fontSize:"clamp(42px,7vw,80px)",letterSpacing:"-0.01em"}}>
+            {about.heading.map((line,i)=>(
+              <span key={i} className={i===about.heading.length-1?"text-[#666]":""}>{line}<br/></span>
+            ))}
+          </h2>
+          {about.bio.map((p,i)=>(
+            <p key={i} className="font-body font-light text-[14.5px] leading-[1.9] text-[#888] mb-6">{p}</p>
+          ))}
+          <div className="flex flex-wrap gap-2 mt-4">
+            {about.skills.map(s=><span key={s} className="skill-tag">{s}</span>)}
+          </div>
+        </div>
+        <div className="rev-r" style={{transitionDelay:"0.15s"}}>
+          <div className="relative mb-6">
+            <div className="w-full aspect-[3/4] bg-[#161616] border border-[#333]/40
+              flex flex-col items-center justify-center overflow-hidden relative">
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="w-full h-12 bg-gradient-to-b from-transparent
+                  via-white/[0.02] to-transparent anim-scan-v"/>
+              </div>
+              <div className="w-24 h-24 rounded-full border border-[#333]/60 flex items-center justify-center mb-4">
+                <svg className="w-10 h-10 text-[#444]" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                </svg>
+              </div>
+              <div className="font-mono text-[9px] tracking-[0.16em] uppercase text-[#444]">[ Photo ]</div>
+              <div className="absolute top-3 left-3  w-5 h-5 border-l border-t border-[#444]/60"/>
+              <div className="absolute top-3 right-3 w-5 h-5 border-r border-t border-[#444]/60"/>
+              <div className="absolute bottom-3 left-3  w-5 h-5 border-l border-b border-[#444]/60"/>
+              <div className="absolute bottom-3 right-3 w-5 h-5 border-r border-b border-[#444]/60"/>
+            </div>
+            <div className="absolute -bottom-4 -right-4 bg-white text-[#080808] px-4 py-2">
+              <div className="font-display text-[11px] tracking-widest">SALESFORCE DEV</div>
+            </div>
+          </div>
+          <div className="mt-8 grid grid-cols-2 gap-px bg-[#333]/30">
+            {about.info.map(item=>(
+              <div key={item.label} className="bg-[#161616] p-4">
+                <div className="font-mono text-[9px] tracking-wider uppercase text-[#666] mb-1">{item.label}</div>
+                <div className={`font-cond font-medium text-[13px]
+                  ${item.blink?"text-white flex items-center gap-2":"text-[#f0ede6]"}`}>
+                  {item.blink&&<span className="w-1.5 h-1.5 rounded-full bg-white/70 anim-blink"/>}
+                  {item.value}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════ Experience ══════════ */
+function TimelineItem({ item, index, isLast }) {
+  return (
+    <div className="rev-l relative" style={{transitionDelay:`${index*0.1}s`}}>
+      <div className="absolute -left-[33px] md:-left-[53px] top-2 w-3.5 h-3.5 border
+        border-[#444] bg-[#0f0f0f] rotate-45 z-10 transition-all duration-300
+        hover:bg-white hover:border-white hover:scale-125 cursor-default"/>
+      <div className={`group hover:bg-[#161616]/40 transition-colors duration-300 p-4 -mx-4
+        ${!isLast?"border-b border-[#333]/30 pb-10 mb-10":""}`}>
+        <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+          <div>
+            <div className="font-cond font-semibold text-[18px] tracking-wide text-white uppercase">{item.role}</div>
+            <div className="font-mono text-[11px] tracking-wide text-[#666] mt-0.5">{item.company}</div>
+          </div>
+          <span className="font-mono text-[10px] tracking-wider text-[#444]
+            border border-[#333]/50 px-2.5 py-1">{item.period}</span>
+        </div>
+        <p className="font-body font-light text-[13.5px] leading-[1.85] text-[#666] mb-4 max-w-2xl">
+          {item.description}
+        </p>
+        <div className="flex flex-wrap gap-1.5">
+          {item.tags.map(tag=><span key={tag} className={item.tagStyle==="primary"?"etag":"etag-w"}>{tag}</span>)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Experience() {
+  const [secRef,fillRef] = useTimelineFill();
+  const revRef = useReveal();
+  const { experience } = CONTENT;
+  return (
+    <section id="experience" className="relative z-10 bg-[#0f0f0f] border-b border-[#333]/30" ref={secRef}>
+      <div className="max-w-5xl mx-auto px-8 md:px-14 py-24" ref={revRef}>
+        <div className="rev flex items-end justify-between mb-16 flex-wrap gap-6">
+          <div>
+            <SectionLabel number={experience.sectionNumber} label={experience.sectionLabel}/>
+            <h2 className="font-display leading-[0.9] tracking-tight text-white"
+              style={{fontSize:"clamp(42px,7vw,80px)",letterSpacing:"-0.01em"}}>
+              {experience.heading.map((line,i)=>(
+                <span key={i} className={i===experience.heading.length-1?"text-[#666]":""}>{line}<br/></span>
+              ))}
+            </h2>
+          </div>
+          <p className="font-body font-light text-[13px] text-[#666] max-w-xs">{experience.summary}</p>
+        </div>
+        <div className="relative pl-8 md:pl-14">
+          <div className="absolute left-0 md:left-4 top-0 bottom-0 w-px bg-[#333]/40 overflow-hidden">
+            <div ref={fillRef} className="tl-fill w-full bg-gradient-to-b from-white/60 via-white/30 to-transparent"/>
+          </div>
+          {experience.items.map((item,i)=>(
+            <TimelineItem key={item.role} item={item} index={i} isLast={i===experience.items.length-1}/>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════ Projects ══════════ */
+function ProjectCard({ project, delay }) {
+  return (
+    <div className="proj-card rev bg-[#0f0f0f] relative overflow-hidden group" style={{transitionDelay:`${delay}s`}}>
+      <div className="p-6 pb-0">
+        <div className="flex items-start justify-between mb-4">
+          <span className="font-mono text-[9px] tracking-[0.16em] uppercase text-[#444]">{project.index}</span>
+          <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#444]
+            border border-[#333]/40 px-2 py-0.5">{project.stack}</span>
+        </div>
+        <h3 className="font-cond font-semibold text-[20px] tracking-wide uppercase text-white mb-2">{project.title}</h3>
+        <p className="font-body font-light text-[13px] leading-[1.7] text-[#666] mb-4">{project.description}</p>
+      </div>
+      <div className="relative mx-6 mb-6 mt-2 aspect-video bg-[#161616] border border-[#333]/30 overflow-hidden">
+        {project.videoSrc ? (
+          <video src={project.videoSrc} controls className="w-full h-full object-cover"/>
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="w-full h-8 bg-gradient-to-b from-transparent
+                via-white/[0.015] to-transparent anim-scan-v"/>
+            </div>
+            <div className="w-10 h-10 border border-[#444]/60 flex items-center justify-center
+              group-hover:border-white group-hover:bg-white/5 transition-all duration-300">
+              <svg className="w-4 h-4 ml-0.5 text-[#666] group-hover:text-white transition-colors"
+                fill="currentColor" viewBox="0 0 18 20"><path d="M1 1L17 10L1 19V1Z"/></svg>
+            </div>
+            <span className="font-mono text-[9px] tracking-widest uppercase text-[#444]">Demo Video</span>
+          </div>
+        )}
+      </div>
+      <div className="px-6 pb-5 flex items-center justify-between border-t border-[#333]/30 pt-4">
+        <a href={project.githubHref} target="_blank" rel="noopener noreferrer" className="ghlink">↗ GitHub</a>
+        <div className="w-5 h-5 border border-[#333]/50 group-hover:border-white
+          transition-colors duration-300 rotate-45 group-hover:bg-white/5"/>
+      </div>
+    </div>
+  );
+}
+
+function Projects() {
+  const ref = useReveal();
+  const { projects } = CONTENT;
+  return (
+    <section id="projects" className="relative z-10 bg-[#080808] border-b border-[#333]/30" ref={ref}>
+      <div className="max-w-5xl mx-auto px-8 md:px-14 py-24">
+        <div className="rev flex items-end justify-between mb-16 flex-wrap gap-6">
+          <div>
+            <SectionLabel number={projects.sectionNumber} label={projects.sectionLabel}/>
+            <h2 className="font-display leading-[0.9] tracking-tight text-white"
+              style={{fontSize:"clamp(42px,7vw,80px)",letterSpacing:"-0.01em"}}>
+              {projects.heading.map((line,i)=>(
+                <span key={i} className={i===projects.heading.length-1?"text-[#666]":""}>{line}<br/></span>
+              ))}
+            </h2>
+          </div>
+          <a href={projects.githubAllHref} target="_blank" rel="noopener noreferrer"
+            className="font-mono text-[10px] tracking-[0.14em] uppercase text-[#666]
+              border-b border-[#333]/40 hover:text-white hover:border-white
+              pb-0.5 transition-all duration-200">
+            View All on GitHub →
+          </a>
+        </div>
+        <div className="grid md:grid-cols-2 gap-px bg-[#333]/20">
+          {projects.items.map((proj,i)=><ProjectCard key={proj.index} project={proj} delay={i*0.08}/>)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════ Contact ══════════ */
+function Contact() {
+  const ref = useReveal();
+  const { contact } = CONTENT;
+  return (
+    <section id="contact" className="relative z-10 bg-[#0f0f0f]" ref={ref}>
+      <div className="max-w-5xl mx-auto px-8 md:px-14 py-24">
+        <div className="rev border border-[#333]/30 p-10 md:p-14 relative overflow-hidden">
+          <div className="absolute -right-6 -bottom-4 font-display text-[150px]
+            text-white/[0.025] leading-none select-none pointer-events-none"
+            style={{letterSpacing:"-0.03em"}}>HIRE</div>
+          <div className="flex items-start gap-3 mb-10">
+            <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-[#666]">{contact.sectionNumber} —</span>
+            <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-[#666]">{contact.sectionLabel}</span>
+          </div>
+          <h2 className="font-display leading-[0.88] tracking-tight text-white mb-8"
+            style={{fontSize:"clamp(48px,9vw,110px)",letterSpacing:"-0.02em"}}>
+            {contact.heading.map((line,i)=>(
+              <span key={i} className={i===contact.heading.length-1?"text-[#666]":""}>{line}<br/></span>
+            ))}
+          </h2>
+          <p className="font-body font-light text-[14px] leading-[1.85] text-[#888] max-w-md mb-12">{contact.body}</p>
+          <div className="flex flex-wrap gap-4 mb-14">
+            {contact.links.map(link=>link.primary?(
+              <a key={link.label} href={link.href}
+                className="inline-flex items-center gap-2.5 bg-white text-[#080808]
+                  font-cond font-semibold text-[12px] tracking-[0.14em] uppercase
+                  px-8 py-4 hover:bg-[#e8e4dc] transition-colors duration-200">{link.label}</a>
+            ):(
+              <a key={link.label} href={link.href}
+                target={link.href.startsWith("http")?"_blank":undefined}
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 border border-[#333]/50 text-[#888]
+                  font-cond font-medium text-[12px] tracking-[0.14em] uppercase
+                  px-8 py-4 hover:border-[#f0ede6] hover:text-[#f0ede6]
+                  transition-all duration-200">{link.label}</a>
+            ))}
+          </div>
+          <div className="border-t border-[#333]/30 pt-8 flex flex-wrap items-center justify-between gap-4">
+            <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-[#444]">{contact.footer.copyright}</span>
+            <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-[#444]">{contact.footer.location}</span>
+            <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-[#444]">{contact.footer.email}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════ App root ══════════ */
+function App() {
+  return (
+    <>
+      <Cursor/>
+      <Particles count={40}/>
+      <Nav/>
+      <Hero/>
+      <Marquee/>
+      <About/>
+      <Experience/>
+      <Projects/>
+      <Contact/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
