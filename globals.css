@@ -316,7 +316,7 @@ body::after {
 .anim-fade-up-4 { animation: fadeUp 0.7s 0.50s ease both; }
 .anim-fade-up-5 { animation: fadeUp 0.7s 0.65s ease both; }
 .anim-fade-late { animation: fadeIn 1s 1.6s ease both; }
-.anim-blink     { animation: blink 1.1s step-end infinite; }
+.anim-blink     { animation: blink 1.4s ease-in-out infinite; }
 .anim-scan-v    { animation: scanV 2.4s linear infinite; }
 .anim-bounce    { animation: bounce2 1.6s ease-in-out infinite; }
 

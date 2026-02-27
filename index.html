@@ -4,14 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Manish Rudra Vijayakumar</title>
-<link rel="icon" type="image/png" href="data/assets/favicon.png"/>
+<link rel="icon" type="image/png" href="data/assets/test2.png"/>
 
 <!-- Prevent flash of wrong theme -->
 <script>
   if (localStorage.getItem('theme') === 'light') {
     document.documentElement.dataset.theme = 'light';
     document.querySelector("link[rel='icon']") &&
-      (document.querySelector("link[rel='icon']").href = 'data/assets/favicon.png');
+      (document.querySelector("link[rel='icon']").href = 'data/assets/test2.png');
   }
 </script>
 
@@ -462,7 +462,7 @@ function About() {
                 <div className="font-mono text-[9px] tracking-wider uppercase text-skin-faint mb-1">{item.label}</div>
                 <div className={`font-cond font-medium text-[13px]
                   ${item.blink?"text-skin-text flex items-center gap-2":"text-skin-text"}`}>
-                  {item.blink&&<span className="w-1.5 h-1.5 rounded-full bg-skin-text/70 anim-blink"/>}
+                  {item.blink&&<span className="inline-block w-2 h-2 rounded-full anim-blink" style={{background:'var(--text-primary)'}}/>}
                   {item.value}
                 </div>
               </div>
