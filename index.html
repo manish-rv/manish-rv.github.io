@@ -4,14 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Manish Rudra Vijayakumar</title>
-<link rel="icon" type="image/png" href="data/assets/logo_black.png"/>
+<link rel="icon" type="image/png" href="data/assets/favicon.png"/>
 
 <!-- Prevent flash of wrong theme -->
 <script>
   if (localStorage.getItem('theme') === 'light') {
     document.documentElement.dataset.theme = 'light';
     document.querySelector("link[rel='icon']") &&
-      (document.querySelector("link[rel='icon']").href = 'data/assets/logo_black.png');
+      (document.querySelector("link[rel='icon']").href = 'data/assets/favicon.png');
   }
 </script>
 
@@ -99,17 +99,15 @@ const { useState, useEffect, useRef } = React;
 
 /* ══════════ Cursor ══════════ */
 function Cursor() {
-  const crossRef = useRef(null), dotRef = useRef(null), ringRef = useRef(null);
+  const crossRef = useRef(null), dotRef = useRef(null);
   useEffect(() => {
-    let mx=0,my=0,rx=0,ry=0;
+    let mx=0,my=0;
     const onMove = e => { mx=e.clientX; my=e.clientY; };
     document.addEventListener("mousemove", onMove);
     let raf;
     const tick = () => {
       if(crossRef.current){ crossRef.current.style.left=mx+"px"; crossRef.current.style.top=my+"px"; }
       if(dotRef.current)  { dotRef.current.style.left=mx+"px";   dotRef.current.style.top=my+"px"; }
-      rx+=(mx-rx)*0.13; ry+=(my-ry)*0.13;
-      if(ringRef.current) { ringRef.current.style.left=rx+"px";  ringRef.current.style.top=ry+"px"; }
       raf=requestAnimationFrame(tick);
     };
     raf=requestAnimationFrame(tick);
@@ -118,7 +116,6 @@ function Cursor() {
   return (<>
     <div ref={crossRef} className="cursor-cross"><div className="cursor-cross-inner"/></div>
     <div ref={dotRef}  className="cursor-dot"/>
-    <div ref={ringRef} className="cursor-ring"/>
   </>);
 }
 
@@ -210,9 +207,17 @@ function ThemeToggle() {
   return (
     <button onClick={toggle} aria-label="Toggle theme"
       className="w-8 h-8 flex items-center justify-center border border-skin-border
-        text-skin-sub hover:text-skin-text hover:border-skin-text
-        transition-all duration-200 text-[13px] shrink-0">
-      {light ? '○' : '●'}
+        hover:border-skin-text transition-all duration-200 shrink-0">
+      {light ? (
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      ) : (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#f5c542" stroke="#f5c542" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        
+      )}
     </button>
   );
 }
@@ -257,15 +262,22 @@ function MobileMenu({ open, onClose, nav }) {
 function Nav() {
   const navRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLight, setIsLight] = useState(() => document.documentElement.dataset.theme === 'light');
+  useEffect(() => {
+    const obs = new MutationObserver(() => {
+      setIsLight(document.documentElement.dataset.theme === 'light');
+    });
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => obs.disconnect();
+  }, []);
   const { nav } = CONTENT;
 
   useEffect(()=>{
     const onScroll=()=>{
       if(!navRef.current) return;
       const isLight = document.documentElement.dataset.theme === 'light';
-      navRef.current.style.borderBottomColor = scrollY > 40
-        ? (isLight ? 'rgba(0,0,0,0.14)' : 'rgba(255,255,255,0.08)')
-        : (isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.06)');
+      const border = getComputedStyle(document.documentElement).getPropertyValue('--border-primary').trim();
+      navRef.current.style.borderBottomColor = scrollY > 40 ? border : 'transparent';
     };
     addEventListener("scroll",onScroll);
     return ()=>removeEventListener("scroll",onScroll);
@@ -276,26 +288,24 @@ function Nav() {
       <nav ref={navRef} id="nav"
         style={{ background:'var(--nav-bg)', backdropFilter:"blur(12px)", WebkitBackdropFilter:"blur(12px)" }}
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
-          px-6 md:px-14 py-4 md:py-5 border-b border-skin-border/10">
-        <a href="#hero"
+          px-6 md:px-14 py-4 md:py-5 border-b-2 border-skin-border/30">
+        <a href="#" onClick={(e)=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'})}}
           className="flex items-center gap-3 font-display text-[18px] md:text-[22px] tracking-widest text-skin-text
             hover:text-[var(--hover-text)] transition-colors duration-300">
-          {nav.image && (
-            <img src={nav.image} alt={nav.name}
-              className="w-8 h-8 object-contain shrink-0 bg-skin-base rounded-full"/>
-          )}
+          <img src={isLight ? 'data/assets/logo.png' : 'data/assets/logo_black.png'} alt={nav.name}
+            className="w-8 h-8 object-contain shrink-0 rounded-full"/>
         </a>
         <div className="hidden md:flex items-center gap-10">
           {nav.links.map(l=>(
             <a key={l.href} href={l.href}
-              className="font-mono text-[10px] tracking-[0.16em] uppercase text-skin-sub
-                hover:text-skin-text transition-colors duration-200">{l.label}</a>
+              className="nav-link font-mono text-[13px] tracking-[0.16em] uppercase text-skin-text
+                hover:text-skin-text/70 transition-colors duration-200">{l.label}</a>
           ))}
         </div>
         <div className="flex items-center gap-3">
           <ThemeToggle/>
           <a href={nav.cta.href}
-            className="hidden md:inline-flex items-center gap-2 font-mono text-[10px]
+            className="hidden md:inline-flex items-center gap-2 font-mono text-[13px]
               tracking-[0.14em] uppercase border border-skin-border text-skin-sub
               hover:border-skin-text hover:text-skin-text px-5 py-2.5 transition-all duration-300">
             {nav.cta.label}
@@ -319,8 +329,8 @@ function Hero() {
   const { hero } = CONTENT;
   return (
     <section id="hero"
-      className="relative min-h-screen flex flex-col justify-end
-        pb-16 px-6 md:px-14 pt-24 md:pt-28 overflow-hidden z-10">
+      className="relative flex flex-col justify-end
+        pb-16 px-6 md:px-14 pt-32 md:pt-36 overflow-hidden z-10">
       <div className="absolute left-14 top-28 bottom-0 hidden md:flex flex-col items-center gap-4">
         <div className="w-px bg-skin-border/50 h-20"/>
       </div>
@@ -340,7 +350,7 @@ function Hero() {
               </span>
             ))}
           </div>
-          <h1 className="anim-fade-up-1 font-display leading-[0.88] tracking-tight text-white"
+          <h1 className="anim-fade-up-1 font-display leading-[0.88] tracking-tight text-skin-text"
             style={{fontSize:"clamp(52px,13vw,100px)",letterSpacing:"-0.02em"}}>
             {hero.firstName}<br/>
             <span className="text-skin-text/90">{hero.lastName}</span>
@@ -382,14 +392,6 @@ function Hero() {
           </div>
         </div>
       </div>
-      <div className="anim-fade-late absolute bottom-8 right-8 md:right-12 flex items-center gap-3
-        font-mono text-[9px] tracking-[0.18em] uppercase text-skin-faint">
-        Scroll
-        <div className="flex flex-col gap-0.5 anim-bounce">
-          <span className="block w-3.5 h-px bg-skin-faint rotate-45 origin-right"/>
-          <span className="block w-3.5 h-px bg-skin-faint -rotate-45 -translate-y-px origin-right"/>
-        </div>
-      </div>
     </section>
   );
 }
@@ -398,7 +400,7 @@ function Hero() {
 function Marquee() {
   const items = [...CONTENT.marquee,...CONTENT.marquee];
   return (
-    <div className="relative z-10 border-t border-b border-skin-border/40 bg-skin-muted py-3 overflow-hidden">
+    <div className="relative z-10 border-t-2 border-b-2 border-skin-border/40 bg-skin-muted py-3 overflow-hidden">
       <div className="marquee-track">
         <div className="marquee-inner font-display text-[15px] tracking-[0.18em] text-skin-ghost">
           {items.map((s,i)=><span key={i}>&nbsp;&nbsp;{s.toUpperCase()}&nbsp;<span className="text-skin-border">—</span></span>)}
@@ -413,7 +415,7 @@ function About() {
   const ref = useReveal();
   const { about } = CONTENT;
   return (
-    <section id="about" className="relative z-10 bg-skin-base border-b border-skin-border/30" ref={ref}>
+    <section id="about" className="relative z-10 bg-skin-base border-b-2 border-skin-border/30" ref={ref}>
       <div className="max-w-5xl mx-auto px-6 md:px-14 py-16 md:py-24 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
         <div className="rev">
           <SectionLabel number={about.sectionNumber} label={about.sectionLabel}/>
@@ -480,7 +482,7 @@ function TimelineItem({ item, index, isLast }) {
         border-skin-ghost bg-skin-muted rotate-45 z-10 transition-all duration-300
         hover:bg-skin-text hover:border-skin-text hover:scale-125 cursor-default"/>
       <div className={`group hover:bg-skin-card/40 transition-colors duration-300 p-4 -mx-4
-        ${!isLast?"border-b border-skin-border/30 pb-10 mb-10":""}`}>
+        ${!isLast?"border-b-2 border-skin-border/30 pb-10 mb-10":""}`}>
         <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
           <div>
             <div className="font-cond font-semibold text-[18px] tracking-wide text-skin-text uppercase">{item.role}</div>
@@ -505,7 +507,7 @@ function Experience() {
   const revRef = useReveal();
   const { experience } = CONTENT;
   return (
-    <section id="experience" className="relative z-10 bg-skin-muted border-b border-skin-border/30" ref={secRef}>
+    <section id="experience" className="relative z-10 bg-skin-muted border-b-2 border-skin-border/30" ref={secRef}>
       <div className="max-w-5xl mx-auto px-6 md:px-14 py-16 md:py-24" ref={revRef}>
         <div className="rev flex items-end justify-between mb-12 md:mb-16 flex-wrap gap-6">
           <div>
@@ -576,7 +578,7 @@ function Projects() {
   const ref = useReveal();
   const { projects } = CONTENT;
   return (
-    <section id="projects" className="relative z-10 bg-skin-base border-b border-skin-border/30" ref={ref}>
+    <section id="projects" className="relative z-10 bg-skin-base border-b-2 border-skin-border/30" ref={ref}>
       <div className="max-w-5xl mx-auto px-6 md:px-14 py-16 md:py-24">
         <div className="rev flex items-end justify-between mb-12 md:mb-16 flex-wrap gap-6">
           <div>
@@ -589,14 +591,20 @@ function Projects() {
             </h2>
           </div>
           <a href={projects.githubAllHref} target="_blank" rel="noopener noreferrer"
-            className="font-mono text-[10px] tracking-[0.14em] uppercase text-skin-faint
+            className="font-mono text-[20px] tracking-[0.14em] uppercase text-skin-faint
               border-b border-skin-border/40 hover:text-skin-text hover:border-skin-text
               pb-0.5 transition-all duration-200">
             View All on GitHub →
           </a>
         </div>
         <div className="grid md:grid-cols-2 gap-px bg-skin-border/20">
-          {projects.items.map((proj,i)=><ProjectCard key={proj.index} project={proj} delay={i*0.08}/>)}
+          {projects.items.length===0 ? (
+            <div className="col-span-2 flex items-center justify-center py-24">
+              <span className="font-mono text-[39px] tracking-[0.14em] uppercase text-skin-muted">
+                Loading<span style={{animation:"dotPulse 1.4s infinite",animationDelay:"0s"}}>.</span><span style={{animation:"dotPulse 1.4s infinite",animationDelay:"0.2s"}}>.</span><span style={{animation:"dotPulse 1.4s infinite",animationDelay:"0.4s"}}>.</span>
+              </span>
+            </div>
+          ) : projects.items.map((proj,i)=><ProjectCard key={proj.index} project={proj} delay={i*0.08}/>)}
         </div>
       </div>
     </section>

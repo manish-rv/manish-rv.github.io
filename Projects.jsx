@@ -28,7 +28,7 @@ export default function Projects() {
             href={projects.githubAllHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-[10px] tracking-[0.14em] uppercase text-[#666] border-b border-[#333]/40 hover:text-white hover:border-white pb-0.5 transition-all duration-200"
+            className="font-mono text-[15px] tracking-[0.14em] uppercase text-[#666] border-b border-[#333]/40 hover:text-white hover:border-white pb-0.5 transition-all duration-200"
           >
             View All on GitHub →
           </a>
@@ -36,9 +36,17 @@ export default function Projects() {
 
         {/* Grid */}
         <div className="grid md:grid-cols-2 gap-px bg-[#333]/20">
-          {projects.items.map((proj, i) => (
-            <ProjectCard key={proj.index} project={proj} delay={i * 0.08} />
-          ))}
+          {projects.items.length === 0 ? (
+            <div className="col-span-2 flex items-center justify-center py-24">
+              <span className="font-mono text-[39px] tracking-[0.14em] uppercase text-[#666]">
+                Loading<span style={{ animation: "dotPulse 1.4s infinite", animationDelay: "0s" }}>.</span><span style={{ animation: "dotPulse 1.4s infinite", animationDelay: "0.2s" }}>.</span><span style={{ animation: "dotPulse 1.4s infinite", animationDelay: "0.4s" }}>.</span>
+              </span>
+            </div>
+          ) : (
+            projects.items.map((proj, i) => (
+              <ProjectCard key={proj.index} project={proj} delay={i * 0.08} />
+            ))
+          )}
         </div>
 
       </div>
