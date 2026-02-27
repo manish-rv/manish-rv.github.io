@@ -22,7 +22,7 @@
   --btn-bg:          #fff;
   --btn-text:        #080808;
   --btn-hover-bg:    #e8e4dc;
-  --nav-bg:          rgba(8,8,8,0.92);
+  --nav-bg:          rgba(18,18,22,0.92);
   --scrollbar-thumb: #333;
   --cursor-color:    rgba(255,255,255,1);
   --cursor-ring:     rgba(255,255,255,0.35);
@@ -40,29 +40,29 @@ html[data-theme="light"] {
   --bg-primary:      #f5f3ef;
   --bg-secondary:    #edebe6;
   --bg-tertiary:     #e6e4df;
-  --border-primary:  #c8c5be;
-  --border-subtle:   #d8d5ce;
-  --border-accent:   #ccc8c0;
-  --text-primary:    #0a0a0a;
-  --text-secondary:  #555;
-  --text-tertiary:   #777;
-  --text-muted:      #999;
-  --text-faint:      #888;
-  --hover-text:      #0a0a0a;
-  --btn-bg:          #0a0a0a;
+  --border-primary:  #2a3f6e;
+  --border-subtle:   #1e3060;
+  --border-accent:   #243868;
+  --text-primary:    #0c1a3a;
+  --text-secondary:  #2a3f6e;
+  --text-tertiary:   #4a5d8a;
+  --text-muted:      #7a8ab0;
+  --text-faint:      #6678a0;
+  --hover-text:      #0c1a3a;
+  --btn-bg:          #0c1a3a;
   --btn-text:        #f5f3ef;
-  --btn-hover-bg:    #1a1a1a;
-  --nav-bg:          rgba(245,243,239,0.92);
-  --scrollbar-thumb: #aaa;
-  --cursor-color:    rgba(0,0,0,1);
-  --cursor-ring:     rgba(0,0,0,0.25);
-  --cursor-ring-hover-bg: rgba(0,0,0,0.04);
+  --btn-hover-bg:    #162d5a;
+  --nav-bg:          rgba(238,236,230,0.92);
+  --scrollbar-thumb: #7a8ab0;
+  --cursor-color:    rgba(12,26,58,1);
+  --cursor-ring:     rgba(12,26,58,0.25);
+  --cursor-ring-hover-bg: rgba(12,26,58,0.04);
   /* RGB channels for Tailwind opacity modifier support */
   --bg-primary-rgb:     245, 243, 239;
   --bg-secondary-rgb:   237, 235, 230;
   --bg-tertiary-rgb:    230, 228, 223;
-  --text-primary-rgb:   10, 10, 10;
-  --border-primary-rgb: 200, 197, 190;
+  --text-primary-rgb:   12, 26, 58;
+  --border-primary-rgb: 42, 63, 110;
   --text-muted-rgb:     153, 153, 153;
 }
 
@@ -85,6 +85,11 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   transition: background 0.3s ease, color 0.3s ease;
+}
+a, button, [role="button"] {
+  cursor: none;
+  border-color: var(--border-primary);
+  transition: border-color 0.3s ease, color 0.3s ease;
 }
 
 /* ── SCROLLBAR ─────────────────────────── */
@@ -135,21 +140,6 @@ body::after {
   transition: left 0.05s, top 0.05s;
 }
 
-.cursor-ring {
-  position: fixed; top: 0; left: 0;
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  border: 1px solid var(--cursor-ring);
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 9997;
-  transition: left 0.16s ease, top 0.16s ease, width 0.3s, height 0.3s, background 0.3s;
-}
-body:has(a:hover) .cursor-ring,
-body:has(button:hover) .cursor-ring {
-  width: 56px; height: 56px;
-  background: var(--cursor-ring-hover-bg);
-}
 
 /* ── PARTICLES CANVAS ──────────────────── */
 .particles-canvas {
@@ -201,8 +191,27 @@ body:has(button:hover) .cursor-ring {
 }
 
 /* ── DIVIDERS ──────────────────────────── */
-.hairline   { border-top: 1px solid var(--border-subtle); }
-.hairline-v { border-left: 1px solid var(--border-subtle); }
+.hairline   { border-top: 2px solid var(--border-subtle); }
+.hairline-v { border-left: 2px solid var(--border-subtle); }
+
+/* ── NAV LINK UNDERLINE ───────────────── */
+.nav-link {
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--text-primary);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
 
 /* ── NAV DOT ───────────────────────────── */
 .nav-dot {
@@ -282,6 +291,12 @@ body:has(button:hover) .cursor-ring {
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
+}
+
+@keyframes dotPulse {
+  0%, 20% { opacity: 0; }
+  40%     { opacity: 1; }
+  100%    { opacity: 0; }
 }
 
 @keyframes scanV {

@@ -4,7 +4,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col justify-end pb-16 px-8 md:px-14 pt-28 overflow-hidden z-10"
+      className="relative flex flex-col justify-end pb-16 px-8 md:px-14 pt-44 overflow-hidden z-10"
     >
       {/* Vertical label */}
       <div className="absolute left-14 top-28 bottom-0 hidden md:flex flex-col items-center gap-4">
@@ -39,13 +39,13 @@ export default function Hero() {
 
           {/* Name */}
           <h1
-            className="anim-fade-up-1 font-display leading-[0.88] tracking-tight text-white"
+            className="anim-fade-up-1 font-display leading-[0.88] tracking-tight text-skin-text"
             style={{ fontSize: "clamp(72px,13vw,172px)", letterSpacing: "-0.02em" }}
           >
             {hero.firstName}
             <br />
-            <span className="text-[#f0ede6]/90">{hero.lastName}</span>
-            <span className="text-[#333] anim-blink">_</span>
+            <span className="text-skin-text/90">{hero.lastName}</span>
+            <span className="text-skin-border anim-blink">_</span>
           </h1>
 
           {/* Role */}
@@ -91,13 +91,13 @@ export default function Hero() {
       </div>
 
       {/* Scroll hint */}
-      <div className="anim-fade-late absolute bottom-8 right-12 flex items-center gap-3 font-mono text-[9px] tracking-[0.18em] uppercase text-[#666]">
+      {/* <div className="anim-fade-late absolute bottom-8 right-12 flex items-center gap-3 font-mono text-[9px] tracking-[0.18em] uppercase text-[#666]">
         {hero.scrollLabel}
         <div className="flex flex-col gap-0.5" style={{ animation: "bounce 1.6s ease-in-out infinite" }}>
           <span className="block w-3.5 h-px bg-[#666] rotate-45 origin-right" />
           <span className="block w-3.5 h-px bg-[#666] -rotate-45 -translate-y-px origin-right" />
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }
