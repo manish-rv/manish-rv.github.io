@@ -4,7 +4,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex flex-col justify-end pb-16 px-8 md:px-14 pt-44 overflow-hidden z-10"
+      className="relative min-h-screen flex flex-col justify-end pb-16 px-8 md:px-14 pt-28 overflow-hidden z-10"
     >
       {/* Vertical label */}
       <div className="absolute left-14 top-28 bottom-0 hidden md:flex flex-col items-center gap-4">
