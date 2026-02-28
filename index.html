@@ -176,6 +176,30 @@ function useTimelineFill(threshold=0.04) {
   return [secRef,fillRef];
 }
 
+/* ══════════ SectionHeading ══════════ */
+function SectionHeading({ lines, style }) {
+  return (
+    <h2 className="font-display leading-[0.9] tracking-tight text-skin-text"
+      style={{fontSize:"clamp(38px,7vw,80px)",letterSpacing:"-0.01em",...style}}>
+      {lines.map((line,i)=>(
+        <span key={i} className={i===lines.length-1?"text-skin-faint":""}>{line}<br/></span>
+      ))}
+    </h2>
+  );
+}
+
+/* ══════════ LinkButton ══════════ */
+function LinkButton({ href, label, primary, target, rel }) {
+  const base = "inline-flex items-center gap-2.5 font-cond font-semibold text-[12px] tracking-[0.12em] uppercase px-6 md:px-7 py-3 md:py-3.5 transition-all duration-200";
+  return primary ? (
+    <a href={href} target={target} rel={rel} className={`${base} primary-btn`}
+      style={{background:'var(--btn-bg)', color:'var(--btn-text)'}}>{label}</a>
+  ) : (
+    <a href={href} target={target} rel={rel}
+      className={`${base} border border-skin-border text-skin-sub hover:border-skin-text hover:text-skin-text`}>{label}</a>
+  );
+}
+
 /* ══════════ SectionLabel ══════════ */
 function SectionLabel({ number, label }) {
   return (
@@ -373,20 +397,8 @@ function Hero() {
               </div>
             ))}
             <div className="w-full md:w-auto md:ml-auto flex gap-3 md:gap-4 items-end pb-2 flex-wrap mt-2 md:mt-0">
-              {hero.cta.map(btn=>btn.primary?(
-                <a key={btn.label} href={btn.href}
-                  className="group inline-flex items-center gap-3 font-cond font-semibold
-                    text-[12px] tracking-[0.12em] uppercase px-6 md:px-7 py-3 md:py-3.5
-                    transition-all duration-200 primary-btn"
-                  style={{background:'var(--btn-bg)', color:'var(--btn-text)'}}>
-                  {btn.label}
-                </a>
-              ):(
-                <a key={btn.label} href={btn.href}
-                  className="inline-flex items-center gap-3 border border-skin-border text-skin-sub
-                    font-cond font-medium text-[12px] tracking-[0.12em] uppercase
-                    px-6 md:px-7 py-3 md:py-3.5 hover:border-skin-text hover:text-skin-text
-                    transition-all duration-200">{btn.label}</a>
+              {hero.cta.map(btn=>(
+                <LinkButton key={btn.label} href={btn.href} label={btn.label} primary={btn.primary}/>
               ))}
             </div>
           </div>
@@ -419,12 +431,7 @@ function About() {
       <div className="max-w-5xl mx-auto px-6 md:px-14 py-16 md:py-24 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
         <div className="rev">
           <SectionLabel number={about.sectionNumber} label={about.sectionLabel}/>
-          <h2 className="font-display leading-[0.9] tracking-tight text-skin-text mb-8"
-            style={{fontSize:"clamp(38px,7vw,80px)",letterSpacing:"-0.01em"}}>
-            {about.heading.map((line,i)=>(
-              <span key={i} className={i===about.heading.length-1?"text-skin-faint":""}>{line}<br/></span>
-            ))}
-          </h2>
+          <SectionHeading lines={about.heading} style={{marginBottom:"2rem"}}/>
           {about.bio.map((p,i)=>(
             <p key={i} className="font-body font-light text-[14.5px] leading-[1.9] text-skin-sub mb-6">{p}</p>
           ))}
@@ -504,12 +511,7 @@ function Experience() {
         <div className="rev flex items-end justify-between mb-12 md:mb-16 flex-wrap gap-6">
           <div>
             <SectionLabel number={experience.sectionNumber} label={experience.sectionLabel}/>
-            <h2 className="font-display leading-[0.9] tracking-tight text-skin-text"
-              style={{fontSize:"clamp(38px,7vw,80px)",letterSpacing:"-0.01em"}}>
-              {experience.heading.map((line,i)=>(
-                <span key={i} className={i===experience.heading.length-1?"text-skin-faint":""}>{line}<br/></span>
-              ))}
-            </h2>
+            <SectionHeading lines={experience.heading}/>
           </div>
           <p className="font-body font-light text-[13px] text-skin-faint max-w-xs">{experience.summary}</p>
         </div>
@@ -575,12 +577,7 @@ function Projects() {
         <div className="rev flex items-end justify-between mb-12 md:mb-16 flex-wrap gap-6">
           <div>
             <SectionLabel number={projects.sectionNumber} label={projects.sectionLabel}/>
-            <h2 className="font-display leading-[0.9] tracking-tight text-skin-text"
-              style={{fontSize:"clamp(38px,7vw,80px)",letterSpacing:"-0.01em"}}>
-              {projects.heading.map((line,i)=>(
-                <span key={i} className={i===projects.heading.length-1?"text-skin-faint":""}>{line}<br/></span>
-              ))}
-            </h2>
+            <SectionHeading lines={projects.heading}/>
           </div>
           <a href={projects.githubAllHref} target="_blank" rel="noopener noreferrer"
             className="nav-link font-mono text-[20px] tracking-[0.14em] uppercase text-skin-faint
@@ -613,40 +610,21 @@ function Contact() {
           <div className="absolute -right-6 -bottom-4 font-display text-[150px]
             text-white/[0.025] leading-none select-none pointer-events-none"
             style={{letterSpacing:"-0.03em"}}>HIRE</div>
-          <div className="flex items-start gap-3 mb-10">
-            <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-skin-faint">{contact.sectionNumber} —</span>
-            <span className="font-mono text-[9px] tracking-[0.2em] uppercase text-skin-faint">{contact.sectionLabel}</span>
-          </div>
-          <h2 className="font-display leading-[0.88] tracking-tight text-skin-text mb-8"
-            style={{fontSize:"clamp(40px,9vw,110px)",letterSpacing:"-0.02em"}}>
-            {contact.heading.map((line,i)=>(
-              <span key={i} className={i===contact.heading.length-1?"text-skin-faint":""}>{line}<br/></span>
-            ))}
-          </h2>
+          <SectionLabel number={contact.sectionNumber} label={contact.sectionLabel}/>
+          <SectionHeading lines={contact.heading}
+            style={{fontSize:"clamp(40px,9vw,110px)",letterSpacing:"-0.02em",lineHeight:"0.88",marginBottom:"2rem"}}/>
           <p className="font-body font-light text-[14px] leading-[1.85] text-skin-sub max-w-md mb-10 md:mb-12">{contact.body}</p>
           <div className="flex flex-wrap gap-3 md:gap-4 mb-10 md:mb-14">
-            {contact.links.map(link=>link.primary?(
-              <a key={link.label} href={link.href}
-                className="inline-flex items-center gap-2.5 font-cond font-semibold
-                  text-[12px] tracking-[0.14em] uppercase px-6 md:px-8 py-3 md:py-4
-                  transition-colors duration-200"
-                style={{background:'var(--btn-bg)', color:'var(--btn-text)'}}>
-                {link.label}
-              </a>
-            ):(
-              <a key={link.label} href={link.href}
-                target={link.href.startsWith("http")?"_blank":undefined}
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 border border-skin-border/50 text-skin-sub
-                  font-cond font-medium text-[12px] tracking-[0.14em] uppercase
-                  px-6 md:px-8 py-3 md:py-4 hover:border-skin-text hover:text-skin-text
-                  transition-all duration-200">{link.label}</a>
+            {contact.links.map(link=>(
+              <LinkButton key={link.label} href={link.href} label={link.label} primary={link.primary}
+                target={!link.primary&&link.href.startsWith("http")?"_blank":undefined}
+                rel={!link.primary&&link.href.startsWith("http")?"noopener noreferrer":undefined}/>
             ))}
           </div>
           <div className="border-t border-skin-border/30 pt-6 md:pt-8 flex flex-wrap items-center justify-between gap-3 md:gap-4">
-            <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-skin-ghost">{contact.footer.copyright}</span>
-            <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-skin-ghost">{contact.footer.location}</span>
-            <span className="font-mono text-[9px] tracking-[0.14em] uppercase text-skin-ghost">{contact.footer.email}</span>
+            {[contact.footer.copyright, contact.footer.location, contact.footer.email].map(text=>(
+              <span key={text} className="font-mono text-[9px] tracking-[0.14em] uppercase text-skin-ghost">{text}</span>
+            ))}
           </div>
         </div>
       </div>

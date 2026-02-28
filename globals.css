@@ -236,13 +236,17 @@ body::after {
 }
 
 /* ── TAGS ──────────────────────────────── */
-.skill-tag {
-  display: inline-block;
+.skill-tag, .etag, .etag-w {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 9px;
   font-weight: 400;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  padding: 3px 10px;
+}
+.skill-tag {
+  display: inline-block;
+  letter-spacing: 0.1em;
   padding: 4px 12px;
   border: 1px solid var(--border-accent);
   color: var(--text-tertiary);
@@ -252,25 +256,11 @@ body::after {
   border-color: var(--text-primary);
   color: var(--text-primary);
 }
-
 .etag {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 3px 10px;
   border: 1px solid color-mix(in srgb, var(--text-primary) 12%, transparent);
   color: color-mix(in srgb, var(--text-primary) 45%, transparent);
 }
-
 .etag-w {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 3px 10px;
   border: 1px solid var(--border-accent);
   color: var(--text-faint);
 }

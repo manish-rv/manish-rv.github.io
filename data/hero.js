@@ -10,7 +10,7 @@ const HERO = {
     //{ value: "03",  label: "Certifications" },
   ],
   cta: [
-    { label: "View Work →", href: "#projects", primary: true },
-    { label: "Contact",     href: "#contact",  primary: false },
+    // { label: "View Work →", href: "#projects", primary: true },
+    // { label: "Contact",     href: "#contact",  primary: false },
   ],
 };
