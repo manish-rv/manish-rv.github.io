@@ -12,6 +12,11 @@ function ThemeToggle() {
     } else {
       delete document.documentElement.dataset.theme;
     }
+    // Re-apply CONFIG theme colors if available
+    if (window.__CONFIG_THEMES) {
+      var t = window.__CONFIG_THEMES;
+      t.applyTheme(next ? t.light : t.dark, document.documentElement);
+    }
   };
 
   return (
@@ -94,7 +99,7 @@ function Nav() {
   return (
     <>
       <nav ref={navRef} id="nav"
-        style={{ background:'var(--nav-bg)', backdropFilter:"blur(12px)", WebkitBackdropFilter:"blur(12px)" }}
+        style={{ background:'var(--nav-bg)', backdropFilter:"blur("+(typeof CONFIG!=='undefined'&&CONFIG.layout?CONFIG.layout.navBlur:"12px")+")", WebkitBackdropFilter:"blur("+(typeof CONFIG!=='undefined'&&CONFIG.layout?CONFIG.layout.navBlur:"12px")+")" }}
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
           px-6 md:px-14 py-4 md:py-5 border-b-2 border-skin-border/60">
         <a href="#" onClick={(e)=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'})}}

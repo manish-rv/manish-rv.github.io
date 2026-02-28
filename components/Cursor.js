@@ -1,4 +1,5 @@
 function Cursor() {
+  if (typeof CONFIG !== 'undefined' && CONFIG.features && !CONFIG.features.showCursor) return null;
   const crossRef = useRef(null), dotRef = useRef(null);
   useEffect(() => {
     let mx=0,my=0;

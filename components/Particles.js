@@ -1,4 +1,6 @@
-function Particles({ count=40 }) {
+function Particles({ count }) {
+  if (typeof CONFIG !== 'undefined' && CONFIG.features && !CONFIG.features.showParticles) return null;
+  var _count = count || (typeof CONFIG !== 'undefined' && CONFIG.animations ? CONFIG.animations.particleCount : 40) || 40;
   const cvRef = useRef(null);
   useEffect(() => {
     const cv=cvRef.current, ctx=cv.getContext("2d");
@@ -7,7 +9,7 @@ function Particles({ count=40 }) {
     const mk=()=>({ x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.2+.3,
       dx:(Math.random()-.5)*.18, dy:(Math.random()-.5)*.18, a:Math.random()*.25+.05 });
     resize(); addEventListener("resize",resize);
-    for(let i=0;i<count;i++) pts.push(mk());
+    for(let i=0;i<_count;i++) pts.push(mk());
     const draw=()=>{
       ctx.clearRect(0,0,W,H);
       const color = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim() || '#fff';
@@ -21,6 +23,7 @@ function Particles({ count=40 }) {
     };
     raf=requestAnimationFrame(draw);
     return ()=>{ removeEventListener("resize",resize); cancelAnimationFrame(raf); };
-  },[count]);
-  return <canvas ref={cvRef} className="particles-canvas"/>;
+  },[_count]);
+  var opacity = (typeof CONFIG !== 'undefined' && CONFIG.animations) ? CONFIG.animations.particleOpacity : 0.25;
+  return <canvas ref={cvRef} className="particles-canvas" style={{opacity:opacity}}/>;
 }

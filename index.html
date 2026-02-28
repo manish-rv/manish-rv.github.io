@@ -6,52 +6,153 @@
 <title>Manish Rudra Vijayakumar</title>
 <link rel="icon" type="image/png" href="data/assets/favicon.png"/>
 
-<!-- Prevent flash of wrong theme -->
+<!-- ── SECURITY HEADERS ───────────────────── -->
+<!-- Content Security Policy: restricts what resources the page can load -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; frame-ancestors 'none';">
+<!-- Prevent MIME-type sniffing -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<!-- Control referrer information sent with requests -->
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<!-- Disable unused browser APIs -->
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+<!--
+  NOTE: The following headers only work via HTTP server config (not <meta> tags):
+  - X-Frame-Options: DENY
+  - Strict-Transport-Security: max-age=31536000; includeSubDomains
+  - X-XSS-Protection: 1; mode=block
+  Configure these in your hosting provider (Netlify _headers, Vercel vercel.json, etc.)
+-->
+
+<!-- ── CONFIGURATION ───────────────────────
+     Edit config.js to customize colors, fonts, animations, and features.
+     No need to touch this file for basic customization.
+───────────────────────────────────────────── -->
+<script src="config.js"></script>
+
+<!-- Apply CONFIG to CSS custom properties + handle theme -->
 <script>
-  if (localStorage.getItem('theme') === 'light') {
-    document.documentElement.dataset.theme = 'light';
-    document.querySelector("link[rel='icon']") &&
-      (document.querySelector("link[rel='icon']").href = 'data/assets/favicon.png');
+(function() {
+  // Helper: parse hex/rgba to RGB channels for Tailwind alpha modifier support
+  function hexToRgb(hex) {
+    if (!hex || hex.startsWith('rgba')) return null;
+    hex = hex.replace('#', '');
+    if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+    var r = parseInt(hex.substring(0,2),16);
+    var g = parseInt(hex.substring(2,4),16);
+    var b = parseInt(hex.substring(4,6),16);
+    return r + ', ' + g + ', ' + b;
   }
+
+  // Map CONFIG keys to CSS variable names
+  var varMap = {
+    bgPrimary:'--bg-primary', bgSecondary:'--bg-secondary', bgTertiary:'--bg-tertiary',
+    borderPrimary:'--border-primary', borderSubtle:'--border-subtle', borderAccent:'--border-accent',
+    textPrimary:'--text-primary', textSecondary:'--text-secondary', textTertiary:'--text-tertiary',
+    textMuted:'--text-muted', textFaint:'--text-faint', hoverText:'--hover-text',
+    btnBg:'--btn-bg', btnText:'--btn-text', btnHoverBg:'--btn-hover-bg',
+    navBg:'--nav-bg', scrollbarThumb:'--scrollbar-thumb',
+    cursorColor:'--cursor-color', cursorRing:'--cursor-ring'
+  };
+
+  // Keys that need RGB channel variants for Tailwind opacity support
+  var rgbKeys = {
+    bgPrimary:'--bg-primary-rgb', bgSecondary:'--bg-secondary-rgb', bgTertiary:'--bg-tertiary-rgb',
+    textPrimary:'--text-primary-rgb', borderPrimary:'--border-primary-rgb', textMuted:'--text-muted-rgb'
+  };
+
+  function applyTheme(theme, el) {
+    if (!theme) return;
+    for (var key in varMap) {
+      if (theme[key]) el.style.setProperty(varMap[key], theme[key]);
+    }
+    for (var key in rgbKeys) {
+      if (theme[key]) {
+        var rgb = hexToRgb(theme[key]);
+        if (rgb) el.style.setProperty(rgbKeys[key], rgb);
+      }
+    }
+  }
+
+  if (typeof CONFIG !== 'undefined') {
+    var root = document.documentElement;
+
+    // Determine initial theme
+    var savedTheme = null;
+    try { savedTheme = localStorage.getItem('theme'); } catch(e) {}
+    var startLight = savedTheme === 'light' || (!savedTheme && CONFIG.features && !CONFIG.features.darkModeDefault);
+
+    if (startLight) {
+      root.dataset.theme = 'light';
+      applyTheme(CONFIG.lightTheme, root);
+    } else {
+      applyTheme(CONFIG.darkTheme, root);
+    }
+
+    // Store both themes globally so the theme toggle can re-apply
+    window.__CONFIG_THEMES = { dark: CONFIG.darkTheme, light: CONFIG.lightTheme, applyTheme: applyTheme };
+
+    // Apply feature toggles
+    if (CONFIG.features) {
+      if (!CONFIG.features.smoothScroll) root.classList.remove('scroll-smooth');
+      if (!CONFIG.features.showGrain) root.classList.add('no-grain');
+      if (!CONFIG.features.showCursor) root.classList.add('no-custom-cursor');
+    }
+
+    // Update Google Fonts import URL if configured
+    if (CONFIG.fonts && CONFIG.fonts.importUrl) {
+      window.__CONFIG_FONT_URL = CONFIG.fonts.importUrl;
+    }
+  }
+})();
 </script>
 
 <!-- Tailwind config — must be BEFORE the CDN script -->
 <script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        skin: {
-          base:   'rgb(var(--bg-primary-rgb) / <alpha-value>)',
-          muted:  'rgb(var(--bg-secondary-rgb) / <alpha-value>)',
-          card:   'rgb(var(--bg-tertiary-rgb) / <alpha-value>)',
-          text:   'rgb(var(--text-primary-rgb) / <alpha-value>)',
-          sub:    'var(--text-secondary)',
-          faint:  'var(--text-tertiary)',
-          ghost:  'rgb(var(--text-muted-rgb) / <alpha-value>)',
-          border: 'rgb(var(--border-primary-rgb) / <alpha-value>)',
-          subtle: 'var(--border-subtle)',
-          btn:    'var(--btn-bg)',
-        }
-      },
-      fontFamily: {
-        display: ['"Bebas Neue"', 'sans-serif'],
-        cond:    ['"Barlow Condensed"', 'sans-serif'],
-        body:    ['Barlow', 'sans-serif'],
-        mono:    ['"IBM Plex Mono"', 'monospace'],
-      },
+(function() {
+  var c = (typeof CONFIG !== 'undefined') ? CONFIG : {};
+  var f = c.fonts || {};
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          skin: {
+            base:   'rgb(var(--bg-primary-rgb) / <alpha-value>)',
+            muted:  'rgb(var(--bg-secondary-rgb) / <alpha-value>)',
+            card:   'rgb(var(--bg-tertiary-rgb) / <alpha-value>)',
+            text:   'rgb(var(--text-primary-rgb) / <alpha-value>)',
+            sub:    'var(--text-secondary)',
+            faint:  'var(--text-tertiary)',
+            ghost:  'rgb(var(--text-muted-rgb) / <alpha-value>)',
+            border: 'rgb(var(--border-primary-rgb) / <alpha-value>)',
+            subtle: 'var(--border-subtle)',
+            btn:    'var(--btn-bg)',
+          }
+        },
+        fontFamily: {
+          display: [f.display   || '"Bebas Neue"', 'sans-serif'],
+          cond:    [f.condensed || '"Barlow Condensed"', 'sans-serif'],
+          body:    [f.body      || 'Barlow', 'sans-serif'],
+          mono:    [f.mono      || '"IBM Plex Mono"', 'monospace'],
+        },
+      }
     }
-  }
-}
+  };
+})();
 </script>
 
-<!-- Tailwind CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
+<!-- Tailwind CDN (pinned version) -->
+<script src="https://cdn.tailwindcss.com/3.4.1"></script>
 
-<!-- React + ReactDOM + Babel (CDN — no build step needed for preview) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<!-- React + ReactDOM + Babel (CDN with SRI integrity hashes) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"
+  integrity="sha384-tMH8h3BGESGckSAVGZ82T9n90ztNXxvdwvdM6UoR56cYcf+0iGXBliJ29D+wZ/x8"
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"
+  integrity="sha384-bm7MnzvK++ykSwVJ2tynSE5TRdN+xL418osEVF2DE/L/gfWHj91J2Sphe582B1Bh"
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"
+  integrity="sha384-aGlMNK3U/x0wl4lEH5jD1PGhJlX9hApuPmIiA5gtiYCOQ1J8ejIdC0btaU/TMoBD"
+  crossorigin="anonymous"></script>
 
 <!-- Global styles (fonts, reset, animations, utilities) -->
 <link rel="stylesheet" href="globals.css" />
@@ -176,6 +277,7 @@ function SectionLabel({ number, label }) {
 /* ── Cursor.js ── */
 
 function Cursor() {
+  if (typeof CONFIG !== 'undefined' && CONFIG.features && !CONFIG.features.showCursor) return null;
   const crossRef = useRef(null), dotRef = useRef(null);
   useEffect(() => {
     let mx=0,my=0;
@@ -198,7 +300,9 @@ function Cursor() {
 
 /* ── Particles.js ── */
 
-function Particles({ count=40 }) {
+function Particles({ count }) {
+  if (typeof CONFIG !== 'undefined' && CONFIG.features && !CONFIG.features.showParticles) return null;
+  var _count = count || (typeof CONFIG !== 'undefined' && CONFIG.animations ? CONFIG.animations.particleCount : 40) || 40;
   const cvRef = useRef(null);
   useEffect(() => {
     const cv=cvRef.current, ctx=cv.getContext("2d");
@@ -207,7 +311,7 @@ function Particles({ count=40 }) {
     const mk=()=>({ x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.2+.3,
       dx:(Math.random()-.5)*.18, dy:(Math.random()-.5)*.18, a:Math.random()*.25+.05 });
     resize(); addEventListener("resize",resize);
-    for(let i=0;i<count;i++) pts.push(mk());
+    for(let i=0;i<_count;i++) pts.push(mk());
     const draw=()=>{
       ctx.clearRect(0,0,W,H);
       const color = getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim() || '#fff';
@@ -221,8 +325,9 @@ function Particles({ count=40 }) {
     };
     raf=requestAnimationFrame(draw);
     return ()=>{ removeEventListener("resize",resize); cancelAnimationFrame(raf); };
-  },[count]);
-  return <canvas ref={cvRef} className="particles-canvas"/>;
+  },[_count]);
+  var opacity = (typeof CONFIG !== 'undefined' && CONFIG.animations) ? CONFIG.animations.particleOpacity : 0.25;
+  return <canvas ref={cvRef} className="particles-canvas" style={{opacity:opacity}}/>;
 }
 
 /* ── Nav.js ── */
@@ -240,6 +345,11 @@ function ThemeToggle() {
       document.documentElement.dataset.theme = 'light';
     } else {
       delete document.documentElement.dataset.theme;
+    }
+    // Re-apply CONFIG theme colors if available
+    if (window.__CONFIG_THEMES) {
+      var t = window.__CONFIG_THEMES;
+      t.applyTheme(next ? t.light : t.dark, document.documentElement);
     }
   };
 
@@ -323,7 +433,7 @@ function Nav() {
   return (
     <>
       <nav ref={navRef} id="nav"
-        style={{ background:'var(--nav-bg)', backdropFilter:"blur(12px)", WebkitBackdropFilter:"blur(12px)" }}
+        style={{ background:'var(--nav-bg)', backdropFilter:"blur("+(typeof CONFIG!=='undefined'&&CONFIG.layout?CONFIG.layout.navBlur:"12px")+")", WebkitBackdropFilter:"blur("+(typeof CONFIG!=='undefined'&&CONFIG.layout?CONFIG.layout.navBlur:"12px")+")" }}
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between
           px-6 md:px-14 py-4 md:py-5 border-b-2 border-skin-border/60">
         <a href="#" onClick={(e)=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'})}}
@@ -399,8 +509,7 @@ function Hero() {
             <span className="text-skin-sub">// </span>{hero.role}
           </p>
           <div className="anim-fade-up-3 max-w-xl">
-            <p className="font-body font-light text-[15px] leading-[1.85] text-skin-sub"
-              dangerouslySetInnerHTML={{__html:hero.bio}}/>
+            <p className="font-body font-light text-[15px] leading-[1.85] text-skin-sub">{hero.bio}</p>
           </div>
           <div className="anim-fade-up-4 mt-8 md:mt-10 flex flex-wrap items-end gap-8 md:gap-12
             border-t border-skin-border/40 pt-6 md:pt-8">
@@ -425,6 +534,7 @@ function Hero() {
 /* ── Marquee.js ── */
 
 function Marquee() {
+  if (typeof CONFIG !== 'undefined' && CONFIG.features && !CONFIG.features.showMarquee) return null;
   const items = [...CONTENT.marquee,...CONTENT.marquee];
   return (
     <div className="relative z-10 border-t-2 border-b-2 border-skin-border/70 bg-skin-muted py-3 overflow-hidden">

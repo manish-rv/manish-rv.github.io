@@ -1,31 +1,39 @@
 /* ─────────────────────────────────────────────
    globals.css  —  All global styles for the portfolio.
-   Component-specific styles are co-located in each component file.
+
+   CUSTOMIZATION: Edit config.js (not this file) to change colors,
+   fonts, animations, and features. This file provides fallback
+   defaults — config.js overrides them at runtime.
 ───────────────────────────────────────────── */
 
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Barlow+Condensed:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
 
-/* ── THEME VARIABLES (dark default) ────────── */
+/* ── THEME VARIABLES (dark default) ──────────
+   These CSS custom properties drive all colors.
+   config.js overrides these at runtime via inline styles on <html>.
+   The -rgb variants provide R,G,B channels for Tailwind's
+   opacity modifier syntax (e.g., bg-skin-text/50).
+─────────────────────────────────────────────── */
 :root {
-  --bg-primary:      #080808;
-  --bg-secondary:    #0f0f0f;
-  --bg-tertiary:     #161616;
-  --border-primary:  #333;
-  --border-subtle:   #222;
-  --border-accent:   #2a2a2a;
-  --text-primary:    #f0ede6;
-  --text-secondary:  #888;
-  --text-tertiary:   #666;
-  --text-muted:      #444;
-  --text-faint:      #555;
-  --hover-text:      #d8d4cc;
-  --btn-bg:          #fff;
-  --btn-text:        #080808;
-  --btn-hover-bg:    #e8e4dc;
-  --nav-bg:          rgba(18,18,22,0.92);
-  --scrollbar-thumb: #333;
-  --cursor-color:    rgba(255,255,255,1);
-  --cursor-ring:     rgba(255,255,255,0.35);
+  --bg-primary:      #080808;     /* Main page background */
+  --bg-secondary:    #0f0f0f;     /* Alternate section backgrounds */
+  --bg-tertiary:     #161616;     /* Cards, elevated surfaces */
+  --border-primary:  #333;        /* Section borders */
+  --border-subtle:   #222;        /* Subtle dividers */
+  --border-accent:   #2a2a2a;     /* Accent borders (tags) */
+  --text-primary:    #f0ede6;     /* Headings, primary text */
+  --text-secondary:  #888;        /* Body text */
+  --text-tertiary:   #666;        /* Captions, labels */
+  --text-muted:      #444;        /* Ghost/muted elements */
+  --text-faint:      #555;        /* Very faint labels */
+  --hover-text:      #d8d4cc;     /* Hover state text */
+  --btn-bg:          #fff;        /* Primary button background */
+  --btn-text:        #080808;     /* Primary button text */
+  --btn-hover-bg:    #e8e4dc;     /* Primary button hover */
+  --nav-bg:          rgba(18,18,22,0.92); /* Navbar blur background */
+  --scrollbar-thumb: #333;        /* Scrollbar thumb color */
+  --cursor-color:    rgba(255,255,255,1);   /* Custom cursor color */
+  --cursor-ring:     rgba(255,255,255,0.35); /* Cursor crosshair */
   --cursor-ring-hover-bg: rgba(255,255,255,0.04);
   /* RGB channels for Tailwind opacity modifier support */
   --bg-primary-rgb:     8, 8, 8;
@@ -36,6 +44,10 @@
   --text-muted-rgb:     68, 68, 68;
 }
 
+/* ── LIGHT THEME ─────────────────────────────
+   Activated by toggling the theme button in the navbar.
+   Sets data-theme="light" on <html>.
+─────────────────────────────────────────────── */
 html[data-theme="light"] {
   --bg-primary:      #f5f3ef;
   --bg-secondary:    #edebe6;
@@ -106,12 +118,28 @@ html[data-theme="light"] a.primary-btn:hover {
   color: #fff !important;
 }
 
+/* ── FEATURE TOGGLE: Custom Cursor ────────
+   Set CONFIG.features.showCursor = false in config.js
+   to use the default browser cursor instead.
+─────────────────────────────────────────────── */
+html.no-custom-cursor body,
+html.no-custom-cursor a,
+html.no-custom-cursor button,
+html.no-custom-cursor [role="button"] {
+  cursor: auto;
+}
+
 /* ── SCROLLBAR ─────────────────────────── */
 ::-webkit-scrollbar        { width: 3px; }
 ::-webkit-scrollbar-thumb  { background: var(--scrollbar-thumb); }
 ::-webkit-scrollbar-track  { background: var(--bg-primary); }
 
-/* ── GRAIN OVERLAY ─────────────────────── */
+/* ── GRAIN OVERLAY ────────────────────────
+   Film-grain texture effect. Opacity controlled by
+   CONFIG.animations.grainOpacity in config.js.
+   Disable entirely with CONFIG.features.showGrain = false.
+─────────────────────────────────────────────── */
+html.no-grain body::after { display: none; }
 body::after {
   content: '';
   position: fixed;
@@ -164,7 +192,11 @@ body::after {
   opacity: 0.25;
 }
 
-/* ── SCROLL REVEAL CLASSES ─────────────── */
+/* ── SCROLL REVEAL CLASSES ────────────────
+   Elements with .rev, .rev-l, or .rev-r start hidden
+   and animate in when they enter the viewport.
+   Controlled by the useReveal() hook in shared.js.
+─────────────────────────────────────────────── */
 .rev {
   opacity: 0;
   transform: translateY(28px);
@@ -193,7 +225,10 @@ body::after {
 }
 .tl-fill.on { height: 100%; }
 
-/* ── MARQUEE ───────────────────────────── */
+/* ── MARQUEE ──────────────────────────────
+   Speed controlled by CONFIG.animations.marqueeSpeed.
+   Disable with CONFIG.features.showMarquee = false.
+─────────────────────────────────────────────── */
 .marquee-track {
   overflow: hidden;
   white-space: nowrap;
@@ -235,7 +270,11 @@ body::after {
   display: inline-block;
 }
 
-/* ── TAGS ──────────────────────────────── */
+/* ── TAGS ─────────────────────────────────
+   .skill-tag — About section skill pills
+   .etag      — Experience primary tags
+   .etag-w    — Experience secondary tags
+─────────────────────────────────────────────── */
 .skill-tag, .etag, .etag-w {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 9px;

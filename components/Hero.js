@@ -34,8 +34,7 @@ function Hero() {
             <span className="text-skin-sub">// </span>{hero.role}
           </p>
           <div className="anim-fade-up-3 max-w-xl">
-            <p className="font-body font-light text-[15px] leading-[1.85] text-skin-sub"
-              dangerouslySetInnerHTML={{__html:hero.bio}}/>
+            <p className="font-body font-light text-[15px] leading-[1.85] text-skin-sub">{hero.bio}</p>
           </div>
           <div className="anim-fade-up-4 mt-8 md:mt-10 flex flex-wrap items-end gap-8 md:gap-12
             border-t border-skin-border/40 pt-6 md:pt-8">
