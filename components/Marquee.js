@@ -1,4 +1,5 @@
 function Marquee() {
+  if (typeof CONFIG !== 'undefined' && CONFIG.features && !CONFIG.features.showMarquee) return null;
   const items = [...CONTENT.marquee,...CONTENT.marquee];
   return (
     <div className="relative z-10 border-t-2 border-b-2 border-skin-border/70 bg-skin-muted py-3 overflow-hidden">
