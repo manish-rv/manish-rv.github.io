@@ -2,12 +2,12 @@ const ABOUT = {
   sectionNumber: "01", sectionLabel: "About Me",
   heading: ["TURNING", "COMPLEXITY", "INTO CODE."],
   bio: [
-    `I'm a software engineer who spent 5 years deep in the Salesforce ecosystem — building platforms for healthcare, finance, and Fortune 500 companies. I've shipped Apex triggers at 3am, architected multi-cloud MuleSoft integrations, and led teams through gnarly migrations.`,
-    `Outside of Salesforce, I build full-stack apps with React and Node.js, and I hold a Master's in Computer Science with a published ML paper.`,
+    `With over six years of experience as a Salesforce Engineer, I specialize in architecting scalable solutions for the finance and travel sectors. I have a proven track record of driving operational efficiency through high-impact technical initiatives, including the design of dynamic API integration frameworks and the engineering of cross-instance synchronizations that ensure data integrity. Most recently, I have pioneered AI-driven support ecosystems by deploying Salesforce Messaging for In-App and Web (MIAW) and leveraging Data Cloud and Agentforce to build autonomous, intelligent agents for internal knowledge management.`,
+    `Outside of Salesforce, I work with AI tools to build full-stack apps, and I enjoy playing outdoor sports.`,
   ],
   skills: [
     "Salesforce Developer", "Apex", "LWC", "SOQL", 
-    "Agentforce", "Data Cloud","Python","Agile", "Postman"
+    "Agentforce", "Data Cloud","Python","Jira", "Postman"
   ],
   info: [
     { label: "Location",  value: "Washington, USA" },
