@@ -41,19 +41,9 @@ export default function About() {
           {/* Photo placeholder */}
           <div className="relative mb-6">
             <div className="w-full aspect-[3/4] bg-skin-card border border-skin-border/40
-              flex flex-col items-center justify-center overflow-hidden relative">
-              {/* Scanline */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="w-full h-12 bg-gradient-to-b from-transparent
-                  via-skin-text/[0.02] to-transparent anim-scan-v" />
-              </div>
-              {/* Avatar icon */}
-              <div className="w-24 h-24 rounded-full border border-skin-border/60 flex items-center justify-center mb-4">
-                <svg className="w-10 h-10 text-skin-ghost" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
-                </svg>
-              </div>
-              <div className="font-mono text-[9px] tracking-[0.16em] uppercase text-skin-ghost">[ Photo ]</div>
+              overflow-hidden relative">
+              <img src="data/assets/Manish.jpg" alt="Manish Rudra Vijayakumar"
+                className="w-full h-full object-cover" />
               {/* Corner marks */}
               <div className="absolute top-3 left-3  w-5 h-5 border-l border-t border-skin-ghost/60" />
               <div className="absolute top-3 right-3 w-5 h-5 border-r border-t border-skin-ghost/60" />
