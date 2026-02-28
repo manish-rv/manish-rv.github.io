@@ -40,9 +40,9 @@ html[data-theme="light"] {
   --bg-primary:      #f5f3ef;
   --bg-secondary:    #edebe6;
   --bg-tertiary:     #e6e4df;
-  --border-primary:  #2a3f6e;
-  --border-subtle:   #1e3060;
-  --border-accent:   #243868;
+  --border-primary:  #3a4a6a;
+  --border-subtle:   #2a3a5a;
+  --border-accent:   #3a4a6a;
   --text-primary:    #0c1a3a;
   --text-secondary:  #2a3f6e;
   --text-tertiary:   #4a5d8a;
@@ -62,7 +62,7 @@ html[data-theme="light"] {
   --bg-secondary-rgb:   237, 235, 230;
   --bg-tertiary-rgb:    230, 228, 223;
   --text-primary-rgb:   12, 26, 58;
-  --border-primary-rgb: 42, 63, 110;
+  --border-primary-rgb: 136, 152, 184;
   --text-muted-rgb:     153, 153, 153;
 }
 
@@ -89,7 +89,21 @@ body {
 a, button, [role="button"] {
   cursor: none;
   border-color: var(--border-primary);
-  transition: border-color 0.3s ease, color 0.3s ease;
+  transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+}
+a:hover, button:hover, [role="button"]:hover {
+  background-color: rgba(var(--text-primary-rgb), 0.25);
+}
+a.nav-link:hover, a.nav-logo:hover {
+  background-color: transparent;
+}
+a.primary-btn:hover {
+  background: #1b1c1d !important;
+  color: #fff !important;
+}
+html[data-theme="light"] a.primary-btn:hover {
+  background: #223a6c !important;
+  color: #fff !important;
 }
 
 /* ── SCROLLBAR ─────────────────────────── */
