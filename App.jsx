@@ -1,4 +1,3 @@
-import "../styles/globals.css";
 import Cursor      from "./Cursor";
 import Particles   from "./Particles";
 import Nav         from "./Nav";
