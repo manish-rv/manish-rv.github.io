@@ -17,25 +17,25 @@ const CONFIG = {
    *  which Tailwind references via the skin-* color palette.
    * ──────────────────────────────────────────────────────────── */
   darkTheme: {
-    bgPrimary:      "#06060e",      // Deep dark blue-black background
-    bgSecondary:    "#0a0a18",      // Slightly lighter dark blue
-    bgTertiary:     "#12122a",      // Cards, elevated surfaces — dark indigo
-    borderPrimary:  "#2a2a5c",      // Blue-tinted borders
-    borderSubtle:   "#1a1a3e",      // Subtle blue dividers
-    borderAccent:   "#2e2e60",      // Accent borders (tags, small elements)
-    textPrimary:    "#e8e4f8",      // Light lavender headings
-    textSecondary:  "#8a8aac",      // Muted blue-gray body text
-    textTertiary:   "#6a6a90",      // Faint blue-gray captions
-    textMuted:      "#3a3a6a",      // Ghost text, very muted
-    textFaint:      "#5a5a88",      // Tag text, subtle labels
-    hoverText:      "#c8c4e8",      // Hover state — brighter lavender
-    btnBg:          "#8b5cf6",      // Vibrant purple button
-    btnText:        "#ffffff",      // White button text
-    btnHoverBg:     "#7c3aed",      // Deeper purple on hover
-    navBg:          "rgba(6,6,14,0.92)",  // Dark blue-black navbar
-    scrollbarThumb: "#2a2a5c",      // Blue-tinted scrollbar
-    cursorColor:    "rgba(139,92,246,1)",   // Purple cursor
-    cursorRing:     "rgba(139,92,246,0.35)", // Purple cursor ring
+    bgPrimary:      "#161616",      // Near-black background
+    bgSecondary:    "#10232A",      // Deep dark teal surface
+    bgTertiary:     "#1c2e35",      // Cards — teal-tinted dark
+    borderPrimary:  "#3D4D55",      // Blue-gray borders
+    borderSubtle:   "#2a3a42",      // Subtle teal dividers
+    borderAccent:   "#4a5a62",      // Accent borders (tags)
+    textPrimary:    "#D3C3B9",      // Warm beige headings
+    textSecondary:  "#A79E9C",      // Warm gray body text
+    textTertiary:   "#7a7270",      // Muted warm captions
+    textMuted:      "#3D4D55",      // Ghost text — blue-gray
+    textFaint:      "#6a7a82",      // Tag text, subtle labels
+    hoverText:      "#B58863",      // Hover — warm amber
+    btnBg:          "#B58863",      // Warm amber button
+    btnText:        "#161616",      // Dark button text
+    btnHoverBg:     "#a07650",      // Deeper amber on hover
+    navBg:          "rgba(22,22,22,0.92)",  // Near-black navbar
+    scrollbarThumb: "#3D4D55",      // Blue-gray scrollbar
+    cursorColor:    "rgba(181,136,99,1)",    // Amber cursor
+    cursorRing:     "rgba(181,136,99,0.35)", // Amber cursor ring
   },
 
   /* ── LIGHT THEME COLORS ─────────────────────────────────────
@@ -43,25 +43,25 @@ const CONFIG = {
    *  Same structure as darkTheme — just different values.
    * ──────────────────────────────────────────────────────────── */
   lightTheme: {
-    bgPrimary:      "#f0eef8",
-    bgSecondary:    "#e8e5f4",
-    bgTertiary:     "#ddd8f0",
-    borderPrimary:  "#6b5ba0",
-    borderSubtle:   "#8878b8",
-    borderAccent:   "#7a6ab0",
-    textPrimary:    "#1a1040",
-    textSecondary:  "#4a3a7a",
-    textTertiary:   "#6a5a9a",
-    textMuted:      "#9a8ac0",
-    textFaint:      "#8070b0",
-    hoverText:      "#1a1040",
-    btnBg:          "#6d28d9",
-    btnText:        "#ffffff",
-    btnHoverBg:     "#5b21b6",
-    navBg:          "rgba(240,238,248,0.92)",
-    scrollbarThumb: "#8a7ab0",
-    cursorColor:    "rgba(26,16,64,1)",
-    cursorRing:     "rgba(26,16,64,0.25)",
+    bgPrimary:      "#F2E9E4",      // Warm cream background
+    bgSecondary:    "#e8ddd6",      // Slightly deeper cream
+    bgTertiary:     "#ddd0c8",      // Cards — warm beige
+    borderPrimary:  "#C9ADA7",      // Dusty rose borders
+    borderSubtle:   "#d8c4be",      // Subtle warm dividers
+    borderAccent:   "#b89e98",      // Deeper rose accent borders
+    textPrimary:    "#22223B",      // Deep navy headings
+    textSecondary:  "#4A4E69",      // Muted indigo body text
+    textTertiary:   "#6a6d84",      // Light indigo captions
+    textMuted:      "#C9ADA7",      // Ghost text — dusty rose
+    textFaint:      "#8a7e7a",      // Tag text, subtle labels
+    hoverText:      "#22223B",      // Deep navy hover
+    btnBg:          "#4A4E69",      // Muted indigo button
+    btnText:        "#F2E9E4",      // Cream button text
+    btnHoverBg:     "#22223B",      // Deep navy hover
+    navBg:          "rgba(242,233,228,0.92)", // Warm cream navbar
+    scrollbarThumb: "#C9ADA7",      // Dusty rose scrollbar
+    cursorColor:    "rgba(34,34,59,1)",      // Navy cursor
+    cursorRing:     "rgba(34,34,59,0.25)",   // Navy cursor ring
   },
 
   /* ── FONTS ──────────────────────────────────────────────────

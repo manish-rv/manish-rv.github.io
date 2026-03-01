@@ -15,33 +15,33 @@
    opacity modifier syntax (e.g., bg-skin-text/50).
 ─────────────────────────────────────────────── */
 :root {
-  --bg-primary:      #06060e;     /* Deep dark blue-black background */
-  --bg-secondary:    #0a0a18;     /* Slightly lighter dark blue */
-  --bg-tertiary:     #12122a;     /* Cards — dark indigo */
-  --border-primary:  #2a2a5c;     /* Blue-tinted borders */
-  --border-subtle:   #1a1a3e;     /* Subtle blue dividers */
-  --border-accent:   #2e2e60;     /* Accent borders */
-  --text-primary:    #e8e4f8;     /* Light lavender headings */
-  --text-secondary:  #8a8aac;     /* Muted blue-gray body */
-  --text-tertiary:   #6a6a90;     /* Faint blue-gray captions */
-  --text-muted:      #3a3a6a;     /* Ghost text */
-  --text-faint:      #5a5a88;     /* Tag text */
-  --hover-text:      #c8c4e8;     /* Hover — brighter lavender */
-  --btn-bg:          #8b5cf6;     /* Vibrant purple button */
-  --btn-text:        #ffffff;     /* White button text */
-  --btn-hover-bg:    #7c3aed;     /* Deeper purple hover */
-  --nav-bg:          rgba(6,6,14,0.92); /* Dark blue-black navbar */
-  --scrollbar-thumb: #2a2a5c;     /* Blue-tinted scrollbar */
-  --cursor-color:    rgba(139,92,246,1);   /* Purple cursor */
-  --cursor-ring:     rgba(139,92,246,0.35); /* Purple cursor ring */
-  --cursor-ring-hover-bg: rgba(139,92,246,0.04);
+  --bg-primary:      #161616;     /* Near-black background */
+  --bg-secondary:    #10232A;     /* Deep dark teal surface */
+  --bg-tertiary:     #1c2e35;     /* Cards — teal-tinted dark */
+  --border-primary:  #3D4D55;     /* Blue-gray borders */
+  --border-subtle:   #2a3a42;     /* Subtle teal dividers */
+  --border-accent:   #4a5a62;     /* Accent borders */
+  --text-primary:    #D3C3B9;     /* Warm beige headings */
+  --text-secondary:  #A79E9C;     /* Warm gray body */
+  --text-tertiary:   #7a7270;     /* Muted warm captions */
+  --text-muted:      #3D4D55;     /* Ghost text — blue-gray */
+  --text-faint:      #6a7a82;     /* Tag text */
+  --hover-text:      #B58863;     /* Hover — warm amber */
+  --btn-bg:          #B58863;     /* Warm amber button */
+  --btn-text:        #161616;     /* Dark button text */
+  --btn-hover-bg:    #a07650;     /* Deeper amber hover */
+  --nav-bg:          rgba(22,22,22,0.92); /* Near-black navbar */
+  --scrollbar-thumb: #3D4D55;     /* Blue-gray scrollbar */
+  --cursor-color:    rgba(181,136,99,1);    /* Amber cursor */
+  --cursor-ring:     rgba(181,136,99,0.35); /* Amber cursor ring */
+  --cursor-ring-hover-bg: rgba(181,136,99,0.04);
   /* RGB channels for Tailwind opacity modifier support */
-  --bg-primary-rgb:     6, 6, 14;
-  --bg-secondary-rgb:   10, 10, 24;
-  --bg-tertiary-rgb:    18, 18, 42;
-  --text-primary-rgb:   232, 228, 248;
-  --border-primary-rgb: 42, 42, 92;
-  --text-muted-rgb:     58, 58, 106;
+  --bg-primary-rgb:     22, 22, 22;
+  --bg-secondary-rgb:   16, 35, 42;
+  --bg-tertiary-rgb:    28, 46, 53;
+  --text-primary-rgb:   211, 195, 185;
+  --border-primary-rgb: 61, 77, 85;
+  --text-muted-rgb:     61, 77, 85;
 }
 
 /* ── LIGHT THEME ─────────────────────────────
@@ -49,33 +49,33 @@
    Sets data-theme="light" on <html>.
 ─────────────────────────────────────────────── */
 html[data-theme="light"] {
-  --bg-primary:      #f0eef8;
-  --bg-secondary:    #e8e5f4;
-  --bg-tertiary:     #ddd8f0;
-  --border-primary:  #6b5ba0;
-  --border-subtle:   #8878b8;
-  --border-accent:   #7a6ab0;
-  --text-primary:    #1a1040;
-  --text-secondary:  #4a3a7a;
-  --text-tertiary:   #6a5a9a;
-  --text-muted:      #9a8ac0;
-  --text-faint:      #8070b0;
-  --hover-text:      #1a1040;
-  --btn-bg:          #6d28d9;
-  --btn-text:        #ffffff;
-  --btn-hover-bg:    #5b21b6;
-  --nav-bg:          rgba(240,238,248,0.92);
-  --scrollbar-thumb: #8a7ab0;
-  --cursor-color:    rgba(26,16,64,1);
-  --cursor-ring:     rgba(26,16,64,0.25);
-  --cursor-ring-hover-bg: rgba(26,16,64,0.04);
+  --bg-primary:      #F2E9E4;
+  --bg-secondary:    #e8ddd6;
+  --bg-tertiary:     #ddd0c8;
+  --border-primary:  #C9ADA7;
+  --border-subtle:   #d8c4be;
+  --border-accent:   #b89e98;
+  --text-primary:    #22223B;
+  --text-secondary:  #4A4E69;
+  --text-tertiary:   #6a6d84;
+  --text-muted:      #C9ADA7;
+  --text-faint:      #8a7e7a;
+  --hover-text:      #22223B;
+  --btn-bg:          #4A4E69;
+  --btn-text:        #F2E9E4;
+  --btn-hover-bg:    #22223B;
+  --nav-bg:          rgba(242,233,228,0.92);
+  --scrollbar-thumb: #C9ADA7;
+  --cursor-color:    rgba(34,34,59,1);
+  --cursor-ring:     rgba(34,34,59,0.25);
+  --cursor-ring-hover-bg: rgba(34,34,59,0.04);
   /* RGB channels for Tailwind opacity modifier support */
-  --bg-primary-rgb:     240, 238, 248;
-  --bg-secondary-rgb:   232, 229, 244;
-  --bg-tertiary-rgb:    221, 216, 240;
-  --text-primary-rgb:   26, 16, 64;
-  --border-primary-rgb: 107, 91, 160;
-  --text-muted-rgb:     154, 138, 192;
+  --bg-primary-rgb:     242, 233, 228;
+  --bg-secondary-rgb:   232, 221, 214;
+  --bg-tertiary-rgb:    221, 208, 200;
+  --text-primary-rgb:   34, 34, 59;
+  --border-primary-rgb: 201, 173, 167;
+  --text-muted-rgb:     201, 173, 167;
 }
 
 /* ── RESET ─────────────────────────────── */
@@ -104,17 +104,17 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(88,28,180,0.15) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(30,64,175,0.12) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(139,92,246,0.06) 0%, transparent 50%);
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(16,35,42,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(61,77,85,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(181,136,99,0.05) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
 html[data-theme="light"] body::before {
   background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(109,40,217,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(99,102,241,0.06) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(139,92,246,0.04) 0%, transparent 50%);
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(201,173,167,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(74,78,105,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(34,34,59,0.03) 0%, transparent 50%);
 }
 a, button, [role="button"] {
   cursor: none;
@@ -128,12 +128,12 @@ a.nav-link:hover, a.nav-logo:hover {
   background-color: transparent;
 }
 a.primary-btn:hover {
-  background: #7c3aed !important;
-  color: #fff !important;
+  background: #a07650 !important;
+  color: #161616 !important;
 }
 html[data-theme="light"] a.primary-btn:hover {
-  background: #5b21b6 !important;
-  color: #fff !important;
+  background: #22223B !important;
+  color: #F2E9E4 !important;
 }
 
 /* ── FEATURE TOGGLE: Custom Cursor ────────
