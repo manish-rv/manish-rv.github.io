@@ -15,33 +15,33 @@
    opacity modifier syntax (e.g., bg-skin-text/50).
 ─────────────────────────────────────────────── */
 :root {
-  --bg-primary:      #080808;     /* Main page background */
-  --bg-secondary:    #0f0f0f;     /* Alternate section backgrounds */
-  --bg-tertiary:     #161616;     /* Cards, elevated surfaces */
-  --border-primary:  #333;        /* Section borders */
-  --border-subtle:   #222;        /* Subtle dividers */
-  --border-accent:   #2a2a2a;     /* Accent borders (tags) */
-  --text-primary:    #f0ede6;     /* Headings, primary text */
-  --text-secondary:  #888;        /* Body text */
-  --text-tertiary:   #666;        /* Captions, labels */
-  --text-muted:      #444;        /* Ghost/muted elements */
-  --text-faint:      #555;        /* Very faint labels */
-  --hover-text:      #d8d4cc;     /* Hover state text */
-  --btn-bg:          #fff;        /* Primary button background */
-  --btn-text:        #080808;     /* Primary button text */
-  --btn-hover-bg:    #e8e4dc;     /* Primary button hover */
-  --nav-bg:          rgba(18,18,22,0.92); /* Navbar blur background */
-  --scrollbar-thumb: #333;        /* Scrollbar thumb color */
-  --cursor-color:    rgba(255,255,255,1);   /* Custom cursor color */
-  --cursor-ring:     rgba(255,255,255,0.35); /* Cursor crosshair */
-  --cursor-ring-hover-bg: rgba(255,255,255,0.04);
+  --bg-primary:      #161616;     /* Near-black background */
+  --bg-secondary:    #10232A;     /* Deep dark teal surface */
+  --bg-tertiary:     #1c2e35;     /* Cards — teal-tinted dark */
+  --border-primary:  #3D4D55;     /* Blue-gray borders */
+  --border-subtle:   #2a3a42;     /* Subtle teal dividers */
+  --border-accent:   #4a5a62;     /* Accent borders */
+  --text-primary:    #D3C3B9;     /* Warm beige headings */
+  --text-secondary:  #A79E9C;     /* Warm gray body */
+  --text-tertiary:   #7a7270;     /* Muted warm captions */
+  --text-muted:      #3D4D55;     /* Ghost text — blue-gray */
+  --text-faint:      #6a7a82;     /* Tag text */
+  --hover-text:      #B58863;     /* Hover — warm amber */
+  --btn-bg:          #B58863;     /* Warm amber button */
+  --btn-text:        #161616;     /* Dark button text */
+  --btn-hover-bg:    #a07650;     /* Deeper amber hover */
+  --nav-bg:          rgba(22,22,22,0.92); /* Near-black navbar */
+  --scrollbar-thumb: #3D4D55;     /* Blue-gray scrollbar */
+  --cursor-color:    rgba(181,136,99,1);    /* Amber cursor */
+  --cursor-ring:     rgba(181,136,99,0.35); /* Amber cursor ring */
+  --cursor-ring-hover-bg: rgba(181,136,99,0.04);
   /* RGB channels for Tailwind opacity modifier support */
-  --bg-primary-rgb:     8, 8, 8;
-  --bg-secondary-rgb:   15, 15, 15;
-  --bg-tertiary-rgb:    22, 22, 22;
-  --text-primary-rgb:   240, 237, 230;
-  --border-primary-rgb: 51, 51, 51;
-  --text-muted-rgb:     68, 68, 68;
+  --bg-primary-rgb:     22, 22, 22;
+  --bg-secondary-rgb:   16, 35, 42;
+  --bg-tertiary-rgb:    28, 46, 53;
+  --text-primary-rgb:   211, 195, 185;
+  --border-primary-rgb: 61, 77, 85;
+  --text-muted-rgb:     61, 77, 85;
 }
 
 /* ── LIGHT THEME ─────────────────────────────
@@ -49,33 +49,33 @@
    Sets data-theme="light" on <html>.
 ─────────────────────────────────────────────── */
 html[data-theme="light"] {
-  --bg-primary:      #f5f3ef;
-  --bg-secondary:    #edebe6;
-  --bg-tertiary:     #e6e4df;
-  --border-primary:  #3a4a6a;
-  --border-subtle:   #2a3a5a;
-  --border-accent:   #3a4a6a;
-  --text-primary:    #0c1a3a;
-  --text-secondary:  #2a3f6e;
-  --text-tertiary:   #4a5d8a;
-  --text-muted:      #7a8ab0;
-  --text-faint:      #6678a0;
-  --hover-text:      #0c1a3a;
-  --btn-bg:          #0c1a3a;
-  --btn-text:        #f5f3ef;
-  --btn-hover-bg:    #162d5a;
-  --nav-bg:          rgba(238,236,230,0.92);
-  --scrollbar-thumb: #7a8ab0;
-  --cursor-color:    rgba(12,26,58,1);
-  --cursor-ring:     rgba(12,26,58,0.25);
-  --cursor-ring-hover-bg: rgba(12,26,58,0.04);
+  --bg-primary:      #F2E9E4;
+  --bg-secondary:    #e8ddd6;
+  --bg-tertiary:     #ddd0c8;
+  --border-primary:  #C9ADA7;
+  --border-subtle:   #d8c4be;
+  --border-accent:   #b89e98;
+  --text-primary:    #22223B;
+  --text-secondary:  #4A4E69;
+  --text-tertiary:   #6a6d84;
+  --text-muted:      #C9ADA7;
+  --text-faint:      #8a7e7a;
+  --hover-text:      #22223B;
+  --btn-bg:          #4A4E69;
+  --btn-text:        #F2E9E4;
+  --btn-hover-bg:    #22223B;
+  --nav-bg:          rgba(242,233,228,0.92);
+  --scrollbar-thumb: #C9ADA7;
+  --cursor-color:    rgba(34,34,59,1);
+  --cursor-ring:     rgba(34,34,59,0.25);
+  --cursor-ring-hover-bg: rgba(34,34,59,0.04);
   /* RGB channels for Tailwind opacity modifier support */
-  --bg-primary-rgb:     245, 243, 239;
-  --bg-secondary-rgb:   237, 235, 230;
-  --bg-tertiary-rgb:    230, 228, 223;
-  --text-primary-rgb:   12, 26, 58;
-  --border-primary-rgb: 136, 152, 184;
-  --text-muted-rgb:     153, 153, 153;
+  --bg-primary-rgb:     242, 233, 228;
+  --bg-secondary-rgb:   232, 221, 214;
+  --bg-tertiary-rgb:    221, 208, 200;
+  --text-primary-rgb:   34, 34, 59;
+  --border-primary-rgb: 201, 173, 167;
+  --text-muted-rgb:     201, 173, 167;
 }
 
 /* ── RESET ─────────────────────────────── */
@@ -98,6 +98,24 @@ body {
   color: var(--text-primary);
   transition: background 0.3s ease, color 0.3s ease;
 }
+/* Deep space gradient overlay behind content */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(16,35,42,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(61,77,85,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(181,136,99,0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+html[data-theme="light"] body::before {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(201,173,167,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(74,78,105,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(34,34,59,0.03) 0%, transparent 50%);
+}
 a, button, [role="button"] {
   cursor: none;
   border-color: var(--border-primary);
@@ -110,12 +128,12 @@ a.nav-link:hover, a.nav-logo:hover {
   background-color: transparent;
 }
 a.primary-btn:hover {
-  background: #1b1c1d !important;
-  color: #fff !important;
+  background: #a07650 !important;
+  color: #161616 !important;
 }
 html[data-theme="light"] a.primary-btn:hover {
-  background: #223a6c !important;
-  color: #fff !important;
+  background: #22223B !important;
+  color: #F2E9E4 !important;
 }
 
 /* ── FEATURE TOGGLE: Custom Cursor ────────
