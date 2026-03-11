@@ -23,6 +23,7 @@ const COMPONENTS = [
   'components/Experience.js',
   'components/Projects.js',
   'components/Contact.js',
+  'components/Chatbot.js',
 ];
 
 const HTML_FILE = path.join(__dirname, 'index.html');

@@ -1,6 +1,6 @@
 # Manish Rudra Vijayakumar — Portfolio
 
-A modular, React-based portfolio website with a stark monochrome editorial aesthetic.
+A modular, config-driven portfolio website built with React, Tailwind CSS, and a warm editorial aesthetic. Features dark/light theming, scroll-reveal animations, canvas particles, and an interactive chatbot.
 
 ---
 
@@ -8,94 +8,104 @@ A modular, React-based portfolio website with a stark monochrome editorial aesth
 
 ```
 portfolio/
-├── index.html                  ← Self-contained preview (React via CDN, no build needed)
+├── index.html              ← Main HTML file (React via CDN, no npm needed)
+├── config.js               ← ✏️  Design tokens: colors, fonts, animations, feature toggles
+├── globals.css             ← Global styles, animations, chatbot styles
+├── build.js                ← Injects components/ into index.html
 │
-└── src/
-    ├── data/
-    │   └── content.js          ← ✏️  ALL hardcoded text lives here. Edit this to update the site.
-    │
-    ├── styles/
-    │   └── globals.css         ← All global CSS, animations, and utility classes
-    │
-    └── components/
-        ├── App.jsx             ← Root component — composes all sections
-        ├── Cursor.jsx          ← Custom crosshair cursor
-        ├── Particles.jsx       ← Canvas particle effect
-        ├── useReveal.js        ← Scroll-reveal hooks (useReveal, useTimelineFill)
-        ├── Nav.jsx             ← Navigation bar
-        ├── Hero.jsx            ← Hero / landing section
-        ├── Marquee.jsx         ← Scrolling skill ticker
-        ├── About.jsx           ← About me + info grid
-        ├── Experience.jsx      ← Timeline (work + education)
-        ├── Projects.jsx        ← Project cards with video/demo area
-        └── Contact.jsx         ← Contact section + footer
+├── data/                   ← ✏️  All portfolio text lives here
+│   ├── nav.js              ← Logo name, nav links
+│   ├── hero.js             ← Name, role, bio, stats, CTA buttons
+│   ├── marquee.js          ← Skills in the scrolling ticker
+│   ├── about.js            ← About text, skills list, info grid
+│   ├── experience.js       ← Timeline entries (role, company, dates, tags)
+│   ├── projects.js         ← Project cards (title, stack, description, links)
+│   ├── contact.js          ← Contact heading, body text, links, footer
+│   ├── chatbot.js          ← Chatbot Q&A knowledge base and suggestions
+│   └── assets/             ← Images (logos, etc.)
+│
+├── components/             ← ✏️  React components (source of truth)
+│   ├── shared.js           ← useReveal, useTimelineFill, SectionHeading, LinkButton, SectionLabel
+│   ├── Cursor.js           ← Custom crosshair cursor
+│   ├── Particles.js        ← Canvas particle background effect
+│   ├── Nav.js              ← ThemeToggle, MobileMenu, Nav
+│   ├── Hero.js             ← Hero / landing section
+│   ├── Marquee.js          ← Scrolling skill ticker
+│   ├── About.js            ← About me + info grid
+│   ├── Experience.js       ← Timeline (work history)
+│   ├── Projects.js         ← Project cards
+│   ├── Contact.js          ← Contact section + footer
+│   └── Chatbot.js          ← Floating chatbot widget
+│
+└── versions/               ← Session change logs
 ```
 
 ---
 
 ## Editing Content
 
-**To update any text**, open `src/data/content.js` and edit the relevant export:
+**To update portfolio text**, edit the individual files in `data/`:
 
-| Export        | Controls                                      |
-|---------------|-----------------------------------------------|
-| `nav`         | Logo name, nav links, hire-me CTA             |
-| `hero`        | Name, role, bio, stats, CTA buttons           |
-| `marqueeSkills` | Skills in the scrolling ticker              |
-| `about`       | About text, skills list, info grid            |
-| `experience`  | Timeline entries (role, company, dates, tags) |
-| `projects`    | Project cards (title, stack, description, GitHub link, video) |
-| `contact`     | Contact heading, body text, links, footer     |
+| File              | Controls                                      |
+|-------------------|-----------------------------------------------|
+| `data/nav.js`     | Logo name, nav links                          |
+| `data/hero.js`    | Name, role, bio, stats, CTA buttons           |
+| `data/marquee.js` | Skills in the scrolling ticker                |
+| `data/about.js`   | About text, skills list, info grid            |
+| `data/experience.js` | Timeline entries (role, company, dates, tags) |
+| `data/projects.js`   | Project cards (title, stack, description, links) |
+| `data/contact.js`    | Contact heading, body text, links, footer     |
+| `data/chatbot.js`    | Chatbot name, greeting, suggestions, Q&A pairs |
 
-### Adding a project video
+**To customize design** (colors, fonts, animations, features), edit `config.js`. Changes take effect on browser refresh — no build needed.
 
-In `content.js`, find the project entry and set `videoSrc`:
+---
 
-```js
-{
-  index: "01",
-  title: "SF Analytics Dashboard",
-  videoSrc: "/videos/sf-dashboard.mp4",  // ← set this
-  ...
-}
+## Building After Component Changes
+
+If you edit files in `components/`, run the build script to inject them into `index.html`:
+
+```bash
+node build.js
 ```
+
+This replaces everything between the `BUILD:START` / `BUILD:END` markers in `index.html` with the concatenated component files.
+
+> Changes to `config.js`, `globals.css`, or `data/*.js` do **not** require a build — just refresh the browser.
 
 ---
 
 ## Running Locally
 
-### Option A — Zero build (open directly in browser)
-```
-open index.html
-```
-Uses React + Babel via CDN. No npm required.
+Open `index.html` directly in a browser — no npm or build tools required. React, ReactDOM, Babel, and Tailwind are loaded via CDN.
 
-### Option B — With a build tool (Vite recommended)
+For a local server (recommended for best experience):
+
 ```bash
-npm create vite@latest portfolio-app -- --template react
-cd portfolio-app
-
-# Copy src/ files in
-cp -r src/ portfolio-app/src/
-
-npm install
-npm run dev
-```
-
-Then in `main.jsx`:
-```jsx
-import './src/styles/globals.css'
-import App from './src/components/App'
-ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+npx serve .
 ```
 
 ---
 
+## Features
+
+- **Dark / Light Theme** — toggle in the navbar, persisted in localStorage
+- **Config-Driven Design** — all colors, fonts, animations, and feature toggles in `config.js`
+- **Scroll Reveal Animations** — elements animate in on viewport entry via IntersectionObserver
+- **Canvas Particles** — floating particle background effect
+- **Film Grain Overlay** — subtle texture overlay (toggleable)
+- **Custom Cursor** — crosshair cursor with dot follower (toggleable)
+- **Scrolling Marquee** — skills ticker between Hero and About sections
+- **Interactive Chatbot** — floating chat widget with keyword-matched Q&A about the portfolio owner
+- **Mobile Responsive** — hamburger menu, responsive layout, touch-friendly chatbot
+
 ## Tech Stack
 
-- **React 18** — component architecture
-- **Tailwind CSS** — utility classes
-- **Bebas Neue + Barlow Condensed + IBM Plex Mono** — typography
+- **React 18** — component architecture (CDN, no build tooling)
+- **Tailwind CSS 3.4** — utility classes via CDN
+- **Babel Standalone** — JSX transformation in-browser
+- **Bebas Neue + Barlow + Barlow Condensed + IBM Plex Mono** — typography
 - **IntersectionObserver** — scroll-triggered reveal animations
 - **Canvas API** — particle effect
+- **CSS custom properties** — theming system
 - **CSS keyframes** — all animations (no animation library dependency)
